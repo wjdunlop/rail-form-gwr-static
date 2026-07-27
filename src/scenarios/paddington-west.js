@@ -20,6 +20,7 @@
     'https://www.gwr.com/-/media/gwr-sc-website/files/timetables/may-26-december-26/T8-train-times-17-May-to-12-December-2026-v2.pdf',
     'https://www.gwr.com/-/media/gwr-sc-website/files/timetables/may-26-december-26/T6-train-times-17-May-to-12-December-2026-v2.pdf',
     'https://www.gwr.com/-/media/gwr-sc-website/files/timetables/may-26-december-26/B7-train-times-17-May-to-12-December-2026-v2.pdf',
+    'https://www.gwr.com/-/media/gwr-sc-website/files/timetables/may-26-december-26/T5-train-times-17-May-to-12-December-2026.pdf',
     'https://www.gwr.com/stations-and-destinations/stations',
     'https://naptan.api.dft.gov.uk/v1/access-nodes?dataFormat=csv',
     'https://download.geofabrik.de/europe/great-britain-260722.osm.pbf',
@@ -31,7 +32,7 @@
     'https://dataportal.orr.gov.uk/statistics/usage/regional-rail-usage/'
   ]);
   const transform=TrackMap.transform;
-  const project=(longitude,latitude)=>({x:Math.round((longitude+3.15)*68)+8,y:Math.round((52.30-latitude)*96)+8});
+  const project=(longitude,latitude)=>({x:Math.round((longitude+5.70)*100)+20,y:Math.round((52.40-latitude)*120)+20});
   const occupiedOperationalPoints=[];
   const reserveOperationalPoint=(longitude,latitude)=>{const point=project(longitude,latitude);while(occupiedOperationalPoints.some(other=>Math.abs(other.x-point.x)<3&&Math.abs(other.y-point.y)<3))point.y+=3;occupiedOperationalPoints.push(point);return point;};
   const stationOverrides={
@@ -40,6 +41,8 @@
     swindon:{population:233000,color:'#d1933c'},chippenham:{population:36000,color:'#81959a'},'bath-spa':{population:101000,color:'#a35d8d'},
     'bristol-parkway':{population:145000,color:'#a35d8d'},newport:{population:160000,color:'#c45252'},
     'bristol-temple-meads':{population:480000,color:'#a35d8d'},oxford:{population:165000,color:'#789f54'},
+    'cardiff-central':{population:372000,color:'#c45252'},swansea:{population:247000,color:'#c45252'},carmarthen:{population:16000,color:'#c45252'},
+    'exeter-st-davids':{population:131000,color:'#d1933c'},plymouth:{population:265000,color:'#d1933c'},penzance:{population:21000,color:'#d1933c'},
     worcester:{population:104000,color:'#d1933c'},hereford:{population:55000,color:'#c45252'},kemble:{population:1100,color:'#8b6f9e'},
     stroud:{population:27000,color:'#8b6f9e'},cheltenham:{population:119000,color:'#6c8ebf'},gloucester:{population:132000,color:'#6d8791'}
   };
@@ -71,17 +74,21 @@
     service('western-severn-regional',8,'Severn Regional',['bristol-temple-meads','lawrence-hill','stapleton-road','ashley-down','filton-abbey-wood','bristol-parkway','yate','cam-dursley','gloucester','cheltenham','ashchurch-for-tewkesbury','worcestershire-parkway','worcester'],2,20,'#81959a'),
     service('western-bristol-south-wales',9,'Bristol–Newport Local',['bristol-temple-meads','lawrence-hill','stapleton-road','ashley-down','filton-abbey-wood','patchway','pilning','severn-tunnel-junction','newport'],2,20,'#c45252'),
     service('western-cheltenham',10,'Golden Valley Express',['paddington','reading','didcot','swindon','kemble','stroud','stonehouse','gloucester','cheltenham','ashchurch-for-tewkesbury','worcestershire-parkway','worcester'],2,20,'#8b6f9e',{reading:'express',didcot:'express',swindon:'express',gloucester:'express'})
+    ,service('western-carmarthen',11,'South Wales & Carmarthen',['paddington','reading','swindon','bristol-parkway','newport','cardiff-central','bridgend','port-talbot-parkway','neath','swansea','llanelli','pembrey-and-burry-port','carmarthen'],4,20,'#c45252',{reading:'express',swindon:'express','bristol-parkway':'express',newport:'express','cardiff-central':'express'})
+    ,service('western-penzance',12,'West of England Intercity',['paddington','reading','newbury','pewsey','westbury','castle-cary','taunton','tiverton-parkway','exeter-st-davids','newton-abbot','totnes','plymouth','liskeard','bodmin-parkway','par','st-austell','truro','redruth','camborne','st-erth','penzance'],5,24,'#d1933c',{reading:'express',taunton:'express','exeter-st-davids':'express',plymouth:'express'})
+    ,service('western-devon-local',13,'Devon Main Line',['exeter-st-davids','exeter-st-thomas','starcross','dawlish-warren','dawlish','teignmouth','newton-abbot','totnes','ivybridge','plymouth'],3,16,'#81959a')
+    ,service('western-cornwall-local',14,'Cornish Main Line',['plymouth','saltash','st-germans','menheniot','liskeard','bodmin-parkway','lostwithiel','par','st-austell','truro','redruth','camborne','hayle','st-erth','penzance'],3,16,'#789f54')
   ];
   const initialQueues=ODDemand.seedQueues(PassengerDemand,300);
-  const corridorIds=TrackMap.corridors.map(corridor=>[corridor.aId,corridor.bId].sort().join('|'));
-  const operationalTopology=SectionalAppendix.normalize(NESA,corridorIds);
+  const documentedTopology=SectionalAppendix.normalize(NESA),documentedRuleIds=new Set(documentedTopology.corridorRules.map(rule=>rule.id));
+  const operationalTopology=Object.freeze({...documentedTopology,corridorRules:Object.freeze([...documentedTopology.corridorRules,...TrackMap.corridors.filter(corridor=>!documentedRuleIds.has([corridor.aId,corridor.bId].sort().join('|'))).map(corridor=>Object.freeze({id:[corridor.aId,corridor.bId].sort().join('|'),aId:corridor.aId,bId:corridor.bId,routeCodes:[],designation:'unclassified',upTowardsStationId:null,sourcePages:[],evidenceStatus:'NESA line designation pending'}))].sort((a,b)=>a.id.localeCompare(b.id)))});
   const corridorEdges=TrackMap.corridors.map(corridor=>{const rule=SectionalAppendix.ruleFor(operationalTopology,corridor.aId,corridor.bId);return[corridor.aId,corridor.bId,rule?.physicalRoads===1?'single':corridor.profile||'pair'];});
 
   return Schema.defineScenario({
-    id:'paddington-west',name:'Paddington & the Western',description:'Build capacity and manage passenger connections from Paddington to Oxford, the Cotswolds, Bristol and South Wales.',
-    difficulty:'advanced',learningGoals:['Great Western trunk capacity','Oxford and Cotswold connections','Bristol and South Wales routing','Passenger interchange resilience'],
-    seed:'rail-form-paddington-west',sources,grid:{cols:1120,rows:600},credits:2400,
-    fleet:{locomotives:10,passengerCars:23},stations,cities,
+    id:'paddington-west',name:'Great Western network',description:'Analyse the seven-day Great Western operating plan from Paddington across the Thames Valley, West of England, Devon, Cornwall and West Wales.',
+    difficulty:'advanced',learningGoals:['Great Western trunk capacity','West of England service patterns','Devon and Cornwall operations','South Wales and Carmarthen flows','Passenger interchange resilience'],
+    seed:'rail-form-paddington-west',sources,grid:{cols:700,rows:360},credits:2400,
+    fleet:{locomotives:18,passengerCars:56},stations,cities,
     timetablePatterns:[
       {id:'western-12',headwayTicks:12,dwellTicks:2,layoverTicks:4,turnaroundTicks:3},
       {id:'western-16',headwayTicks:16,dwellTicks:2,layoverTicks:5,turnaroundTicks:4},

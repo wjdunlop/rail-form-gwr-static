@@ -4,16 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#e9e5dc" />
-    <title>Rail Form — Great Western Demo</title>
-    <meta name="description" content="A public, browser-based simulation of Great Western railway operations, passenger demand and timetable performance." />
-    <script>
-      if (!new URLSearchParams(location.search).has('scenario')) {
-        const target = new URL(location.href);
-        target.searchParams.set('scenario', 'paddington-west');
-        target.searchParams.set('profile', '1');
-        location.replace(target);
-      }
-    </script>
+    <title>RAIL//FORM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -93,7 +84,7 @@
             <button type="button" data-map-layer="motorways" aria-pressed="true"><i class="motorway-mark"></i>Motorways</button>
           </div>
           <div class="map-key"><span><i class="resource passenger"></i>Passenger service</span><span id="demand-map-key"><i class="demand-key low"></i>LOW</span><span id="demand-map-key-high"><i class="demand-key high"></i>HIGH DEMAND · WIDTH = PAX/HR</span></div>
-          <a id="map-attribution" class="map-attribution hidden" href="https://www.ordnancesurvey.co.uk/products/os-open-built-up-areas" target="_blank" rel="noreferrer">Natural Earth · Contains OS data © Crown copyright and database right 2026 · Network Rail OGL · © OpenStreetMap contributors</a>
+          <a id="map-attribution" class="map-attribution hidden" href="data-licences.html" target="_blank" rel="noreferrer">Data licences · © Crown copyright and database rights 2026 Ordnance Survey AC0000849662 · Contains OS data © Crown copyright and database right 2026 · © OpenStreetMap contributors</a>
           <section id="activity-panel" class="activity-panel collapsed" aria-label="Network activity">
             <header class="activity-header">
               <div><span class="activity-kicker">OPERATIONS</span><b>Activity</b></div>
@@ -200,6 +191,8 @@
     <script src="src/scenarios/station-geographic-mapping.js"></script>
     <script src="src/scenarios/sectional-appendix.js"></script>
     <script src="src/scenarios/schema.js?v=20260727-objective-removed"></script>
+    <script src="src/scenarios/trunk.js"></script>
+    <script src="src/scenarios/transfer.js"></script>
     <script src="src/services/working-plan.js"></script>
     <script src="src/simulation/railway-clock.js?v=20260727-stable-clock"></script>
     <script src="src/simulation/od-demand.js?v=20260727-time-demand"></script>
