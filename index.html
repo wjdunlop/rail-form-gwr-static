@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e9e5dc" />
+    <title>Rail Form — Great Western Demo</title>
+    <meta name="description" content="A public, browser-based simulation of Great Western railway operations, passenger demand and timetable performance." />
+    <script>
+      if (!new URLSearchParams(location.search).has('scenario')) {
+        const target = new URL(location.href);
+        target.searchParams.set('scenario', 'paddington-west');
+        target.searchParams.set('profile', '1');
+        location.replace(target);
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=20260727-national-analysis-2" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark">R//F</span><span>RAIL FORM</span></div>
+        <div class="top-actions">
+          <div class="credits"><span class="eyebrow">FARE REVENUE</span><span id="credits" class="mono">0 CR</span></div>
+          <div class="speed-control" aria-label="Simulation speed">
+            <span id="tick-count" class="tick-count">THU 07:00:00</span>
+            <button class="speed active" data-speed="1">1×</button>
+            <button class="speed" data-speed="2">2×</button>
+            <button class="speed" data-speed="4">4×</button>
+            <button class="speed" data-speed="8">8×</button>
+            <button class="speed" data-speed="16">16×</button>
+            <button class="speed" data-speed="32">32×</button>
+            <button class="speed" data-speed="64">64×</button>
+            <button class="speed" data-speed="128">128×</button>
+            <button class="speed" data-speed="256">256×</button>
+            <button class="speed" data-speed="512">512×</button>
+            <button class="speed" data-speed="1024">1024×</button>
+            <button id="pause-btn" class="icon-btn" title="Pause">Ⅱ</button>
+            <button id="save-btn" class="icon-btn checkpoint-btn" title="Create checkpoint">◇</button>
+            <button id="load-btn" class="icon-btn checkpoint-btn" title="Restore checkpoint">⟲</button>
+            <button id="save-manager-btn" class="icon-btn" title="Named saves">▣</button>
+            <button id="scenario-browser-btn" class="icon-btn" title="Scenarios">▦</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="toolrail">
+          <div class="tool-group primary-tools">
+            <span class="rail-label">SIMULATE</span>
+            <button class="tool active" data-tool="inspect" title="Inspect trains, stations, and lines (4)">
+              <span class="tool-icon inspect-icon"></span><span>Inspect</span><kbd>4</kbd>
+            </button>
+            <button class="tool" data-tool="control" title="Fleet allocation and schedules (6)">
+              <span class="tool-icon control-icon"></span><span>Control</span><kbd>6</kbd>
+            </button>
+            <button class="tool" data-tool="analytics" title="Network performance (7)">
+              <span class="tool-icon analytics-icon"></span><span>Metrics</span><kbd>7</kbd>
+            </button>
+            <button class="tool" data-tool="demand" title="Passenger origin–destination demand (8)">
+              <span class="tool-icon demand-tool-icon"></span><span>Demand</span><kbd>8</kbd>
+            </button>
+          </div>
+          <details class="editor-tools">
+            <summary><span>NETWORK EDITOR</span><i>+</i></summary>
+            <div class="tool-group">
+              <button class="tool" data-tool="track" title="Lay track (1)"><span class="tool-icon track-icon"></span><span>Track</span><kbd>1</kbd></button>
+              <button class="tool" data-tool="erase" title="Remove track (2)"><span class="tool-icon erase-icon"></span><span>Remove</span><kbd>2</kbd></button>
+              <button class="tool" data-tool="double" title="Lay parallel double track (D)"><span class="tool-icon double-track-icon"></span><span>Double</span><kbd>D</kbd></button>
+              <button class="tool" data-tool="station" title="Drag a station area (5)"><span class="tool-icon station-icon"></span><span>Station</span><kbd>5</kbd></button>
+              <button class="tool" data-tool="line" title="Create a rail line (3)"><span class="tool-icon line-icon"></span><span>New line</span><kbd>3</kbd></button>
+            </div>
+            <div class="editor-budget"><span>EDITOR BUDGET</span><b id="editor-credits">2,400 CR</b></div>
+            <div class="editor-history"><button id="undo-btn" title="Undo construction" disabled>↶ Undo</button><button id="redo-btn" title="Redo construction" disabled>Redo ↷</button></div>
+          </details>
+          <button id="help-btn" class="help-button"><span>?</span> Operations guide</button>
+        </aside>
+
+        <section class="map-wrap">
+          <canvas id="game-canvas" aria-label="Rail network map"></canvas>
+          <div id="mode-hint" class="mode-hint">
+            <span class="pulse-dot"></span><span>Select a station, train, or line</span><kbd>ESC</kbd>
+          </div>
+          <div id="map-layers" class="map-layers" role="group" aria-label="Context map layers">
+            <span>MAP</span>
+            <button type="button" data-map-layer="urban" aria-pressed="true"><i class="urban-mark"></i>Urban</button>
+            <button type="button" data-map-layer="green" aria-pressed="true"><i class="green-mark"></i>Green</button>
+            <button type="button" data-map-layer="cities" aria-pressed="true"><i class="city-mark"></i>Cities</button>
+            <button type="button" data-map-layer="rivers" aria-pressed="true"><i class="river-mark"></i>Rivers</button>
+            <button type="button" data-map-layer="motorways" aria-pressed="true"><i class="motorway-mark"></i>Motorways</button>
+          </div>
+          <div class="map-key"><span><i class="resource passenger"></i>Passenger service</span><span id="demand-map-key"><i class="demand-key low"></i>LOW</span><span id="demand-map-key-high"><i class="demand-key high"></i>HIGH DEMAND · WIDTH = PAX/HR</span></div>
+          <a id="map-attribution" class="map-attribution hidden" href="https://www.ordnancesurvey.co.uk/products/os-open-built-up-areas" target="_blank" rel="noreferrer">Natural Earth · Contains OS data © Crown copyright and database right 2026 · Network Rail OGL · © OpenStreetMap contributors</a>
+          <section id="activity-panel" class="activity-panel collapsed" aria-label="Network activity">
+            <header class="activity-header">
+              <div><span class="activity-kicker">OPERATIONS</span><b>Activity</b></div>
+              <div><span id="activity-count" class="activity-count">0</span><button id="activity-toggle" aria-expanded="false" aria-label="Expand activity">+</button></div>
+            </header>
+            <div class="activity-body">
+              <div class="activity-filters" role="group" aria-label="Filter activity by severity">
+                <button class="active" data-activity-filter="all">ALL</button>
+                <button data-activity-filter="info">INFO</button>
+                <button data-activity-filter="warn">WARN</button>
+                <button data-activity-filter="urgent">URGENT</button>
+              </div>
+              <div id="activity-list" class="activity-list" aria-live="polite"><div class="activity-empty">No activity yet</div></div>
+            </div>
+          </section>
+          <div id="toast-stack" class="toast-stack"></div>
+        </section>
+
+        <aside id="inspector" class="inspector">
+          <div id="empty-inspector" class="empty-inspector">
+            <span class="inspector-index">NETWORK / 01</span>
+            <div class="empty-graphic"><span></span><span></span><span></span></div>
+            <h2>Analyze the railway</h2>
+            <p>Inspect live trains and stations, manage operations, and understand passenger demand across the modeled network.</p>
+            <div class="next-step"><span>01</span><p><b>Inspect movement</b>Select a train for its working, passenger load, and boarded journeys.</p></div>
+            <div class="next-step"><span>02</span><p><b>Read demand</b>Open Metrics for waiting passengers, onboard loads, throughput, and time-based demand.</p></div>
+            <div class="next-step"><span>03</span><p><b>Manage operations</b>Use Control for fleet allocation, schedules, platform holds, and validation.</p></div>
+          </div>
+          <div id="station-inspector" class="panel hidden"></div>
+          <div id="line-inspector" class="panel hidden"></div>
+          <div id="control-inspector" class="panel hidden"></div>
+          <div id="analytics-inspector" class="panel hidden"></div>
+          <div id="demand-inspector" class="panel hidden"></div>
+        </aside>
+      </main>
+    </div>
+
+    <div id="onboarding" class="modal-backdrop">
+      <div class="modal">
+        <button id="close-onboarding" class="modal-close">×</button>
+        <span class="modal-kicker">NETWORK BRIEF / 001</span>
+        <h1>Run the railway.<br />Understand the network.</h1>
+        <p class="modal-lede">Explore timetable operations, live train movements, passenger demand, and network performance.</p>
+        <div class="brief-grid">
+          <div><span class="brief-num">01</span><b>Inspect the service</b><p>Select trains and stations to examine routes, platforms, passenger loads, and destinations.</p></div>
+          <div><span class="brief-num">02</span><b>Control operations</b><p>Review the working plan, fleet allocation, directional running, and capacity constraints.</p></div>
+          <div><span class="brief-num">03</span><b>Analyze performance</b><p>Track demand, queues, throughput, transfers, revenue, and completed journeys over time.</p></div>
+        </div>
+        <button id="start-btn" class="primary-button">BEGIN OPERATIONS <span>→</span></button>
+        <button id="demo-btn" class="secondary-button">LOAD PASSENGER TEST MAP <span>↗</span></button>
+        <button id="trunk-demo-btn" class="secondary-button">LOAD TRUNK + BRANCH EXAMPLE <span>↗</span></button>
+        <button id="transfer-demo-btn" class="secondary-button">LOAD TRANSFER TEST <span>↗</span></button>
+        <button id="browse-scenarios-btn" class="secondary-button">BROWSE ALL SCENARIOS <span>→</span></button>
+      </div>
+    </div>
+
+    <div id="save-manager" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="save-manager-title">
+      <div class="modal management-modal">
+        <button id="close-save-manager" class="modal-close" aria-label="Close named saves">×</button>
+        <span class="modal-kicker">OPERATIONS / PERSISTENCE</span>
+        <h1 id="save-manager-title">Named saves</h1>
+        <p class="modal-lede">Create restore points, recover autosaves, or move a railway between browsers.</p>
+        <div class="save-create-row">
+          <label for="save-name">SAVE NAME</label>
+          <div><input id="save-name" maxlength="64" autocomplete="off" value="My railway"><button id="create-named-save" class="compact-primary">SAVE</button></div>
+        </div>
+        <div id="save-confirmation" class="inline-confirm hidden" role="alertdialog">
+          <b></b><span></span><div><button data-confirm="cancel">CANCEL</button><button data-confirm="accept">CONFIRM</button></div>
+        </div>
+        <div id="save-recovery" class="inline-recovery hidden"></div>
+        <div class="management-grid">
+          <section><div class="management-heading"><span>NAMED SLOTS</span><small id="save-status"></small></div><div id="save-slot-list" class="management-list"></div></section>
+          <section><div class="management-heading"><span>AUTOSAVE HISTORY</span><small>EVERY 60 SIM SEC</small></div><div id="autosave-list" class="management-list"></div></section>
+        </div>
+        <div class="management-actions">
+          <button id="restore-named-save">RESTORE</button><button id="export-named-save">EXPORT</button><button id="delete-named-save">DELETE</button>
+          <label class="import-button" for="import-save-file">IMPORT<input id="import-save-file" type="file" accept="application/json,.json" hidden></label>
+        </div>
+      </div>
+    </div>
+
+    <div id="scenario-browser" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="scenario-browser-title">
+      <div class="modal management-modal scenario-modal">
+        <button id="close-scenario-browser" class="modal-close" aria-label="Close scenario browser">×</button>
+        <span class="modal-kicker">NETWORK BRIEFS / LIBRARY</span>
+        <h1 id="scenario-browser-title">Choose a scenario</h1>
+        <div class="scenario-toolbar"><input id="scenario-search" type="search" placeholder="Search goals or scenario…"><select id="scenario-difficulty"><option value="all">ALL DIFFICULTIES</option><option value="beginner">BEGINNER</option><option value="intermediate">INTERMEDIATE</option><option value="advanced">ADVANCED</option></select></div>
+        <div id="scenario-confirmation" class="inline-confirm hidden" role="alertdialog"><b></b><span></span><div><button data-confirm="cancel">CANCEL</button><button data-confirm="accept">START</button></div></div>
+        <div id="scenario-card-list" class="scenario-card-list"></div>
+      </div>
+    </div>
+
+    <script src="rail-core.js"></script>
+    <script src="src/model/ids.js"></script>
+    <script src="src/model/rng.js"></script>
+    <script src="src/model/schema.js"></script>
+    <script src="src/model/selectors.js"></script>
+    <script src="src/persistence/migrations.js"></script>
+    <script src="src/persistence/codec.js"></script>
+    <script src="src/persistence/repository.js"></script>
+    <script src="src/scenarios/geographic-mapping.js"></script>
+    <script src="src/scenarios/track-geometry-composition.js"></script>
+    <script src="src/scenarios/gtcl-corridor-composition.js"></script>
+    <script src="src/scenarios/station-geographic-mapping.js"></script>
+    <script src="src/scenarios/sectional-appendix.js"></script>
+    <script src="src/scenarios/schema.js?v=20260727-objective-removed"></script>
+    <script src="src/services/working-plan.js"></script>
+    <script src="src/simulation/railway-clock.js?v=20260727-stable-clock"></script>
+    <script src="src/simulation/od-demand.js?v=20260727-time-demand"></script>
+    <script src="src/simulation/demand-flow-overlay.js?v=20260727-all-travel-flow"></script>
+    <script src="src/simulation/timetable-passenger-load.js?v=20260727-od-loads"></script>
+    <script src="src/scenarios/browser-loader.js?v=20260727-national-scenario"></script>
+    <script src="src/scenarios/registry.js?v=20260727-national-scenario"></script>
+    <script src="src/scenarios/legacy-adapter.js?v=20260727-memory"></script>
+    <script src="src/ui/save-manager.js"></script>
+    <script src="src/ui/scenario-browser.js?v=20260727-national-scenario"></script>
+    <script src="src/ui/event-log.js"></script>
+    <script src="src/operations/runtime-control.js"></script>
+    <script src="src/rendering/viewport.js"></script>
+    <script src="src/rendering/semantic-zoom.js"></script>
+    <script src="src/rendering/rail-lanes.js"></script>
+    <script src="src/data/uk-map-outline.js?v=20260727"></script>
+    <script src="src/data/uk-map-context.js?v=20260727"></script>
+    <script src="src/data/os-land-context.js?v=20260727"></script>
+    <script src="app.js?v=20260727-national-motion"></script>
+  </body>
+</html>
