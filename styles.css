@@ -138,7 +138,9 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .demand-key { width: 15px; height: 3px; border-radius: 2px; }
 .demand-key.low { background: #3f7f8c; }
 .demand-key.high { height: 6px; background: #e95238; clip-path: polygon(0 25%,70% 25%,70% 0,100% 50%,70% 100%,70% 75%,0 75%); }
-.map-key.demand-hidden #demand-map-key, .map-key.demand-hidden #demand-map-key-high { display: none; }
+.demand-service-key { display: inline-block; width: 20px; height: 0; border-top: 3px solid #3f7f8c; }
+.demand-service-key.nonstop { border-top-style: dashed; }
+.map-key.demand-hidden #demand-map-key, .map-key.demand-hidden #demand-map-key-high, .map-key.demand-hidden #demand-map-key-stopping, .map-key.demand-hidden #demand-map-key-nonstop { display: none; }
 .resource.passenger { border-radius: 50%; background: var(--passenger); }
 .activity-panel { position: absolute; right: 16px; bottom: 16px; width: min(310px, calc(100% - 32px)); border: 1px solid var(--ink); background: var(--surface-raised); box-shadow: var(--shadow-soft); backdrop-filter: blur(8px); z-index: 2; }
 .activity-header { min-height: 47px; display: flex; align-items: center; justify-content: space-between; padding: 8px 9px 8px 12px; }

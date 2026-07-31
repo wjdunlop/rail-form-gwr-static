@@ -34,8 +34,13 @@
     if (!a.area || !b.area) return null;
     const starts = entries(a,tracks), targets = entries(b,tracks);
     if (!starts.length || !targets.length) return null;
-    const blockedAreas=allStations.filter(s=>s.id!==a.id&&s.id!==b.id&&s.area).map(s=>s.area);
+    const blockedAreas=allStations.filter(s=>s.id!==a.id&&s.id!==b.id&&s.area&&!s.allowThroughRouting).map(s=>s.area);
     const blocked=(x,y)=>blockedAreas.some(area=>contains(area,x,y));
+    const throughLinks=new Map();
+    for(const station of allStations.filter(s=>s.id!==a.id&&s.id!==b.id&&s.area&&s.allowThroughRouting)){
+      const gates=entries(station,tracks).map(entry=>entry.outside);
+      for(const gate of gates){const gateKey=key(gate.x,gate.y),linked=throughLinks.get(gateKey)||[];for(const other of gates)if(other.x!==gate.x||other.y!==gate.y)linked.push(other);throughLinks.set(gateKey,linked);}
+    }
     const targetMap = new Map(targets.filter(e=>!blocked(e.outside.x,e.outside.y)).map(e => [key(e.outside.x,e.outside.y),e.inside]));
     const queue = [], seen = new Map(), sourceInside = new Map();
     for (const entry of starts.filter(e=>!blocked(e.outside.x,e.outside.y))) {
@@ -56,6 +61,7 @@
           seen.set(nk,pk); sourceInside.set(nk,sourceInside.get(pk)); queue.push(n);
         }
       }
+      for(const n of throughLinks.get(pk)||[]){const nk=key(n.x,n.y);if(!seen.has(nk)){seen.set(nk,pk);sourceInside.set(nk,sourceInside.get(pk));queue.push(n);}}
     }
     return null;
   }
@@ -89,7 +95,7 @@
       if(!line.locomotive) issues.push({level:'warning',code:'NO_LOCO',lineId:line.id,message:`${line.name} has no locomotive.`});
       if(!line.passengerCars) issues.push({level:'warning',code:'NO_CARS',lineId:line.id,message:`${line.name} has no passenger coaches.`});
     });
-    stations.filter(s=>s.area).forEach(s=>{const connected=lines.filter(l=>l.a.id===s.id||l.b.id===s.id),services=new Set(connected.map(line=>line.serviceGroup||line.serviceId||line.id));const capacity=Math.max(1,s.platformCount||(s.area.w>=s.area.h?s.area.h:s.area.w));if(services.size>capacity)issues.push({level:'error',code:'NO_PLATFORM',message:`${s.name} has ${services.size-capacity} service(s) without a physical platform.`});});
+    stations.filter(s=>s.area&&!s.timetableManaged).forEach(s=>{const connected=lines.filter(l=>l.a.id===s.id||l.b.id===s.id),services=new Set(connected.map(line=>line.serviceGroup||line.serviceId||line.id));const capacity=Math.max(1,s.platformCount||(s.area.w>=s.area.h?s.area.h:s.area.w));if(services.size>capacity)issues.push({level:'error',code:'NO_PLATFORM',message:`${s.name} has ${services.size-capacity} service(s) without a physical platform.`});});
     return issues;
   }
 
@@ -110,5 +116,15 @@
     return null;
   }
 
-  return {key,contains,overlaps,cells,entries,findRailPath,validateArea,platformAssignments,validateNetwork,distanceFare,demandMultiplier,passengerSpawnRate,findPassengerJourney};
+  function findPassengerJourneysFrom(originId,lines){
+    const eligible=lines.filter(l=>l.locomotive&&l.passengerCars&&!l.broken&&l.path?.length&&l.a?.type==='CITY'&&l.b?.type==='CITY').sort((a,b)=>a.number-b.number),adjacency=new Map();
+    for(const line of eligible)for(const stationId of[line.a.id,line.b.id]){if(!adjacency.has(stationId))adjacency.set(stationId,[]);adjacency.get(stationId).push(line);}
+    const compare=(a,b)=>a.transfers-b.transfers||a.distance-b.distance||a.lines.join(',').localeCompare(b.lines.join(',')),compareEntry=(a,b)=>compare(a.route,b.route)||a.key.localeCompare(b.key),heap=[],push=entry=>{heap.push(entry);let index=heap.length-1;while(index){const parent=Math.floor((index-1)/2);if(compareEntry(heap[parent],heap[index])<=0)break;[heap[parent],heap[index]]=[heap[index],heap[parent]];index=parent;}},pop=()=>{const first=heap[0],last=heap.pop();if(heap.length&&last){heap[0]=last;let index=0;while(true){const left=index*2+1,right=left+1;let smallest=index;if(left<heap.length&&compareEntry(heap[left],heap[smallest])<0)smallest=left;if(right<heap.length&&compareEntry(heap[right],heap[smallest])<0)smallest=right;if(smallest===index)break;[heap[index],heap[smallest]]=[heap[smallest],heap[index]];index=smallest;}}return first;};
+    const start={stationId:originId,serviceGroup:null,distance:0,transfers:0,stations:[originId],lines:[]},startKey=`${originId}|`,best=new Map([[startKey,start]]),journeys=new Map([[originId,{stations:[originId],lines:[],distance:0,transfers:0}]]);push({key:startKey,route:start});
+    while(heap.length){const entry=pop(),route=entry.route;if(best.get(entry.key)!==route)continue;const knownJourney=journeys.get(route.stationId);if(!knownJourney||compare(route,knownJourney)<0)journeys.set(route.stationId,{distance:route.distance,stations:route.stations,lines:route.lines,transfers:route.transfers});for(const line of adjacency.get(route.stationId)||[]){const next=line.a.id===route.stationId?line.b.id:line.a.id,group=line.serviceGroup||line.serviceId||line.id,transfers=route.transfers+(route.serviceGroup&&route.serviceGroup!==group?1:0),candidate={stationId:next,serviceGroup:group,distance:route.distance+Math.max(1,line.path.length-2),transfers,stations:[...route.stations,next],lines:[...route.lines,line.id]},key=`${next}|${group}`,known=best.get(key);if(!known||compare(candidate,known)<0){best.set(key,candidate);push({key,route:candidate});}}
+    }
+    return journeys;
+  }
+
+  return {key,contains,overlaps,cells,entries,findRailPath,validateArea,platformAssignments,validateNetwork,distanceFare,demandMultiplier,passengerSpawnRate,findPassengerJourney,findPassengerJourneysFrom};
 });

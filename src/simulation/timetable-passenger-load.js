@@ -25,6 +25,16 @@
     const timing=String(trip.timingLoad||'').toUpperCase(),span=Number(trip.endMinute)-Number(trip.startMinute),stops=stopCalls(trip).length;
     if(['800','802'].includes(timing)||trip.operator==='GW'&&span>=75&&stops<=12)return 650;
     if(trip.operator==='XR'||timing==='387')return 454;
+    // TfW's CIF timing load describes the timed traction, not an authoritative
+    // formation. These values are conservative planning estimates for the
+    // common two/three-car fleets until allocation/consist data is installed.
+    if(trip.operator==='AW'){
+      if(timing==='197')return 188;
+      if(timing==='245')return 170;
+      if(timing==='S')return 150;
+      if(timing==='E')return 180;
+      return 170;
+    }
     if(span>=90)return 480;
     return 300;
   }

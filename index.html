@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260727-national-analysis-2" />
+    <link rel="stylesheet" href="styles.css?v=20260731-demand-lanes" />
   </head>
   <body>
     <div class="shell">
@@ -83,7 +83,7 @@
             <button type="button" data-map-layer="rivers" aria-pressed="true"><i class="river-mark"></i>Rivers</button>
             <button type="button" data-map-layer="motorways" aria-pressed="true"><i class="motorway-mark"></i>Motorways</button>
           </div>
-          <div class="map-key"><span><i class="resource passenger"></i>Passenger service</span><span id="demand-map-key"><i class="demand-key low"></i>LOW</span><span id="demand-map-key-high"><i class="demand-key high"></i>HIGH DEMAND · WIDTH = PAX/HR</span></div>
+          <div class="map-key"><span><i class="resource passenger"></i>Passenger service</span><span id="demand-map-key"><i class="demand-key low"></i>LOW</span><span id="demand-map-key-high"><i class="demand-key high"></i>HIGH DEMAND · WIDTH = PAX/HR</span><span id="demand-map-key-stopping"><i class="demand-service-key stopping"></i>STOPPING · SOLID LANE</span><span id="demand-map-key-nonstop"><i class="demand-service-key nonstop"></i>NON-STOP · DASHED OPPOSITE LANE</span></div>
           <a id="map-attribution" class="map-attribution hidden" href="data-licences.html" target="_blank" rel="noreferrer">Data licences · © Crown copyright and database rights 2026 Ordnance Survey AC0000849662 · Contains OS data © Crown copyright and database right 2026 · © OpenStreetMap contributors</a>
           <section id="activity-panel" class="activity-panel collapsed" aria-label="Network activity">
             <header class="activity-header">
@@ -196,7 +196,7 @@
     <script src="src/services/working-plan.js"></script>
     <script src="src/simulation/railway-clock.js?v=20260727-stable-clock"></script>
     <script src="src/simulation/od-demand.js?v=20260727-time-demand"></script>
-    <script src="src/simulation/demand-flow-overlay.js?v=20260727-all-travel-flow"></script>
+    <script src="src/simulation/demand-flow-overlay.js?v=20260731-stopping-lanes"></script>
     <script src="src/simulation/timetable-passenger-load.js?v=20260727-od-loads"></script>
     <script src="src/scenarios/browser-loader.js?v=20260727-national-scenario"></script>
     <script src="src/scenarios/registry.js?v=20260727-national-scenario"></script>
@@ -211,6 +211,6 @@
     <script src="src/data/uk-map-outline.js?v=20260727"></script>
     <script src="src/data/uk-map-context.js?v=20260727"></script>
     <script src="src/data/os-land-context.js?v=20260727"></script>
-    <script src="app.js?v=20260727-national-motion"></script>
+    <script src="app.js?v=20260731-demand-lanes"></script>
   </body>
 </html>

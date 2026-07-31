@@ -34,10 +34,10 @@
         if (!(rate > 0)) continue;
         totalPassengersPerHour += rate;
         for (let index = 1; index < journey.stations.length; index += 1) {
-          const fromId = journey.stations[index - 1], toId = journey.stations[index], key = `${fromId}>${toId}`;
+          const fromId = journey.stations[index - 1], toId = journey.stations[index], classified = options.classifySegment?.({ fromId, toId, lineId: journey.lines?.[index - 1] || null, journey, index }), callingPattern = classified === 'nonstop' ? 'nonstop' : 'stopping', key = `${fromId}>${toId}|${callingPattern}`;
           const previous = segments.get(key);
           if (previous) previous.passengersPerHour += rate;
-          else segments.set(key, { key, fromId, toId, passengersPerHour: rate, odFlows: 1 });
+          else segments.set(key, { key, fromId, toId, callingPattern, passengersPerHour: rate, odFlows: 1 });
           if (previous) previous.odFlows += 1;
         }
       }

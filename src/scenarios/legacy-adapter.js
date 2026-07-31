@@ -40,7 +40,7 @@
       const city = cities.get(source.id), station = {
         id: source.id, name: source.name || source.id, short: source.short || source.name?.slice(0, 2).toUpperCase() || source.id.slice(0, 2).toUpperCase(),
         type: city ? 'CITY' : source.type || 'STATION',
-        x: source.x, y: source.y, area: clone(source.area || null), layout:clone(source.layout||null), geography:clone(source.geography||null), platformRefs:clone(source.platformRefs||[]), platformCount:source.platformCount||Math.max(Math.min(source.area?.w||1,source.area?.h||1),serviceCounts.get(source.id)||1), color: source.color || '#74766f'
+        x: source.x, y: source.y, area: clone(source.area || null), layout:clone(source.layout||null), geography:clone(source.geography||null), platformRefs:clone(source.platformRefs||[]), platformCount:source.platformCount||Math.max(Math.min(source.area?.w||1,source.area?.h||1),serviceCounts.get(source.id)||1), timetableManaged:Boolean(source.timetableManaged), allowThroughRouting:Boolean(source.allowThroughRouting), color: source.color || '#74766f'
       };
       if (city) Object.assign(station, { population: city.population || 0, passengers: clone(queues.get(source.id) || {}), spawnBuffer: {},
         completedTrips: city.completedTrips || 0, transferCount: city.transferCount || 0, revenue: city.revenue || 0 });

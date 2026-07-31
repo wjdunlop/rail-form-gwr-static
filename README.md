@@ -6,6 +6,11 @@ Live site: <https://wjdunlop.github.io/rail-form-gwr-static/?scenario=paddington
 
 The site runs entirely in the browser and opens the `paddington-west` scenario automatically. It includes the seven-day working timetable, geographic track geometry, passenger origin–destination demand, train inspection, operations controls and performance metrics.
 
+The demand overlay follows exact mapped rail corridors, including services that
+skip intermediate stations. Solid arrows show stopping demand; dashed arrows
+show non-stopping demand on the opposite side of the railway. Arrow width and
+colour represent modeled passengers per hour.
+
 ## Public deployment
 
 This repository is intentionally public and the Pages site is intentionally **not password protected**. StatiCrypt encryption is therefore not applied: StatiCrypt's purpose is password-based encryption, which would conflict with the public-access requirement.
@@ -60,9 +65,10 @@ not assert 248 independently published roads.
 
 This repository contains the standalone Great Western demonstration only. Development tooling, raw publisher downloads, national-model payloads and unrelated scenarios are deliberately excluded.
 
-The current runtime/data snapshot was introduced in commit `4235bdf`. It is synchronized from the
-development workspace as a reviewed static asset set; generated source archives
-and credentials are never copied here. Publication is verified by parsing
+The current Great Western data snapshot was introduced in commit `4235bdf`.
+The browser runtime is synchronized separately from the development workspace
+as a reviewed static asset set; generated source archives, unrelated regional
+products and credentials are never copied here. Publication is verified by parsing
 cache-busted live station, CIF, ODM and GTCL modules after the Pages Actions run,
 because the legacy Pages build API can lag the actual deployment.
 
