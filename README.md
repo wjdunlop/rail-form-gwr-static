@@ -2,7 +2,9 @@
 
 A public, static GitHub Pages deployment of the Great Western railway simulation from Paddington to Carmarthen, Devon and Penzance.
 
-The site runs entirely in the browser and opens the `paddington-west` scenario automatically. It includes the seven-day working timetable, geographically mapped track and station geometry, passenger origin–destination demand, train inspection, operations controls and performance metrics.
+Live site: <https://wjdunlop.github.io/rail-form-gwr-static/?scenario=paddington-west&profile=1>
+
+The site runs entirely in the browser and opens the `paddington-west` scenario automatically. It includes the seven-day working timetable, geographic track geometry, passenger origin–destination demand, train inspection, operations controls and performance metrics.
 
 ## Public deployment
 
@@ -38,11 +40,32 @@ OS OpenData acknowledgement, NaPTAN and Natural Earth status—are in
 ## Western coverage
 
 - 120 mapped stations
+- 124 adjacent corridors and 248/248 GTCL-routed directional paths
+- 1,104 selected GTCL track-centre assets with zero ordinary corridor fallbacks
 - Paddington–Cardiff–Swansea–Carmarthen
 - Reading–Newbury–Westbury–Taunton–Exeter–Plymouth–Penzance
 - 7,553 dated GWR workings across the permanent seven-day loop
 - 6,518 passenger and 908 empty coaching-stock workings, plus departmental and freight movements found in the GWR timetable feed
+- 10,394 ORR ODM flows representing 64,140,038 annual journeys
+
+Station coverage has two authority levels: 65 core stations include pinned OSM
+platform surfaces/roads, while 55 western additions currently use CIF platform
+identities and NaPTAN coordinates pending detailed platform import.
+
+Five directional paths use explicitly tagged opposite-road GTCL geometry where
+one published flow is omitted during product supersession. “248 routed” does
+not assert 248 independently published roads.
 
 ## Scope
 
 This repository contains the standalone Great Western demonstration only. Development tooling, raw publisher downloads, national-model payloads and unrelated scenarios are deliberately excluded.
+
+The current runtime/data snapshot was introduced in commit `4235bdf`. It is synchronized from the
+development workspace as a reviewed static asset set; generated source archives
+and credentials are never copied here. Publication is verified by parsing
+cache-busted live station, CIF, ODM and GTCL modules after the Pages Actions run,
+because the legacy Pages build API can lag the actual deployment.
+
+This repository currently has no software `LICENSE` file. The dataset licences
+in [DATA_LICENCES.md](DATA_LICENCES.md) apply to data and derivatives and do not
+grant a licence to the application code.

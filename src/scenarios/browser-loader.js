@@ -7,9 +7,17 @@
 
   const catalog = Object.freeze([
     Object.freeze({ id:'paddington-west', name:'Paddington & the Western',
-      description:'Build capacity and manage passenger connections from Paddington to Oxford, the Cotswolds, Bristol and South Wales.',
-      difficulty:'advanced', learningGoals:Object.freeze(['Great Western trunk capacity','Oxford and Cotswold connections','Bristol and South Wales routing','Passenger interchange resilience']),
-      stationCount:65, serviceCount:10, deferred:true })
+      description:'Analyse Great Western workings from Paddington through the Thames Valley, Cotswolds, Bristol, South Wales, West Wales, Devon and Cornwall.',
+      difficulty:'advanced', learningGoals:Object.freeze(['Great Western trunk capacity','West of England service patterns','Devon and Cornwall operations','South Wales and Carmarthen flows','Passenger interchange resilience']),
+      stationCount:120, serviceCount:14, deferred:true }),
+    Object.freeze({ id:'euston-west-coast', name:'Avanti West Coast: Full Network',
+      description:'Operate the complete Avanti West Coast calling-point network from Euston to the West Midlands, North West, North Wales and Scotland.',
+      difficulty:'advanced', learningGoals:Object.freeze(['West Coast Main Line capacity','Branch and trunk regulation','Long-distance passenger connections','Real timetable operation']),
+      stationCount:48, serviceCount:13, deferred:true }),
+    Object.freeze({ id:'gb-national', name:'Great Britain: National Railway',
+      description:'Run the complete geographic Great Britain railway with the national seven-day timetable and capacity-enforced train movements.',
+      difficulty:'advanced', learningGoals:Object.freeze(['National timetable operation','Network-wide train movements','Infrastructure capacity','Passenger demand']),
+      stationCount:2677, serviceCount:136844, serviceLabel:'TIMETABLE MOVEMENTS', deferred:true, runtime:'national' })
   ]);
 
   const specifications = Object.freeze({
@@ -23,6 +31,11 @@
       'src/scenarios/maps/paddington-west.odm.js',
       'src/scenarios/maps/paddington-west.external-demand.js',
       'src/scenarios/paddington-west.js'
+    ]) }),
+    'euston-west-coast': Object.freeze({ global:'RailEustonWestCoastScenario', scripts:Object.freeze([
+      'src/scenarios/maps/euston-west-coast.cif.js',
+      'src/scenarios/maps/euston-west-coast.exact.js',
+      'src/scenarios/euston-west-coast.js'
     ]) })
   });
   const pending = new Map();

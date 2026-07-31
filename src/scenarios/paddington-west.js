@@ -6,7 +6,8 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (Schema,GeographicMapping,TrackGeometryComposition,GTCLCorridorComposition,StationGeographicMapping,SectionalAppendix,TrackMap,GTCLMap,GTCLTopology,StationMap,WorkingTimetable,NESA,ODDemand,PassengerDemand,ExternalPassengerDemand) {
   'use strict';
 
-  // Official references used for the simplified topology and service families:
+  // Human-readable references complement the generated GTCL/CIF/ODM products
+  // used by the active 120-station geographic scenario:
   // Network Rail describes the Great Western Main Line from Paddington to Bristol/South Wales and branches towards the Cotswolds.
   // https://www.networkrail.co.uk/our-work/our-routes/western/
   // GWR's current timetable index identifies London–Oxford, London–Worcester/Hereford, and Bristol–Cheltenham/Worcester service groups.
@@ -49,7 +50,7 @@
   const stations=StationMap.stations.map(mapped=>{const [longitude,latitude]=mapped.coordinates,{x,y}=reserveOperationalPoint(longitude,latitude),override=stationOverrides[mapped.id]||{},platformRefs=[...mapped.platformRefs];return{
     id:mapped.id,cityId:`city-${mapped.id}`,name:mapped.name,short:mapped.short,kind:'city-station',x,y,area:{x:x-1,y:y-1,w:2,h:2},
     layout:override.layout||{kind:'through',axis:'horizontal'},platformRefs,platformCount:platformRefs.length,
-    geography:{longitude,latitude,source:'Pinned GWR/OSM station catalog'},color:override.color||'#6d8791',
+    geography:{longitude,latitude,source:mapped.identitySource||'OpenStreetMap station/platform detail'},color:override.color||'#6d8791',
     population:override.population||12000
   };});
   const visualStationGeometry=StationGeographicMapping.normalize(StationMap,TrackMap,stations.map(station=>station.id));
@@ -95,7 +96,8 @@
       {id:'western-20',headwayTicks:20,dwellTicks:2,layoverTicks:5,turnaroundTicks:4},
       {id:'western-24',headwayTicks:24,dwellTicks:2,layoverTicks:6,turnaroundTicks:5}
     ],
-    // Operations retain a deterministic grid projection; display and routed flow use current exact-node OSM tracks.
+    // Operations retain a deterministic grid projection; display and train flow
+    // use the composed Network Rail GTCL topology with retained OSM context.
     trackPolylines:corridorPlan(corridorEdges),visualTrackGeometry:GeographicMapping.normalize(visualMap,stations.map(station=>station.id)),visualStationGeometry,workingTimetable:WorkingTimetable,operationalTopology,
     services,initialQueues,passengerDemand:PassengerDemand,externalPassengerDemand:ExternalPassengerDemand
   });

@@ -1,9 +1,13 @@
 # Data licences and attribution
 
 This notice applies to the public Great Western browser demonstration. The
-application code licence does not replace the licences attached to its source
-datasets. No source organisation endorses this simulation, and all operational
+Any future application-code licence will not replace the licences attached to
+the source datasets. No source organisation endorses this simulation, and all operational
 and passenger outputs are modelled rather than live information.
+
+The repository currently contains no software `LICENSE` file. Accordingly, no
+open-source software licence is asserted here. Dataset licences below apply to
+their data/derivatives only and do not grant rights to the application code.
 
 ## Network Rail
 
@@ -18,8 +22,10 @@ and passenger outputs are modelled rather than live information.
   Government Licence. Attribution: **Contains information provided by Network
   Rail Infrastructure Limited under the Open Government Licence v3.0**.
 - **National Electronic Sectional Appendix** — line designations and direction
-  references. Source PDFs are not redistributed in this static repository;
-  the browser contains a derived, source-page-referenced interpretation.
+  references for the 69 core corridors. Source PDFs are not redistributed in
+  the static repository; the browser contains a derived, source-page-referenced
+  interpretation. The 55 western extension corridors are marked as pending
+  NESA classification.
 
 Links: [Network Rail open-data terms](https://www.networkrail.co.uk/who-we-are/transparency-and-ethics/transparency/),
 [OGL v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/),
@@ -43,11 +49,15 @@ Links: [2024–25 ODM product](https://raildata.org.uk/dataProduct/P-239916c0-7d
 
 ## OpenStreetMap
 
-Railway ways and the original core station platform surfaces are derived from
+Railway ways and the original 65 core station platform surfaces are derived from
 OpenStreetMap through a pinned Geofabrik extract and OSM API queries.
 OpenStreetMap data is licensed under the Open Data Commons Open Database
 Licence 1.0. Attribution: **© OpenStreetMap contributors**. A generated database
 derived from OSM remains subject to ODbL share-alike obligations.
+
+The additional 55 station records do not contain claimed OSM platform
+surfaces; they use CIF platform identities and NaPTAN coordinates while detail
+import remains pending.
 
 Links: [OpenStreetMap copyright and ODbL notice](https://www.openstreetmap.org/copyright),
 [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/).
