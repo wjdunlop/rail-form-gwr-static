@@ -1,10 +1,15 @@
-# Rail Form — Great Western Demo
+# Rail Form — Great Western and Transport for Wales demos
 
-A public, static GitHub Pages deployment of the Great Western railway simulation from Paddington to Carmarthen, Devon and Penzance.
+A public, static GitHub Pages deployment of the Great Western and Transport for
+Wales railway simulations.
 
-Live site: <https://wjdunlop.github.io/rail-form-gwr-static/?scenario=paddington-west&profile=1>
+- Great Western: <https://wjdunlop.github.io/rail-form-gwr-static/?scenario=paddington-west&profile=1>
+- Transport for Wales: <https://wjdunlop.github.io/rail-form-gwr-static/tfw/>
 
-The site runs entirely in the browser and opens the `paddington-west` scenario automatically. It includes the seven-day working timetable, geographic track geometry, passenger origin–destination demand, train inspection, operations controls and performance metrics.
+The site runs entirely in the browser. The root opens `paddington-west`; `/tfw/`
+opens `tfw-network`. Both include a seven-day working timetable, geographic
+track geometry, passenger origin–destination demand, train inspection,
+operations controls and performance metrics.
 
 The demand overlay follows exact mapped rail corridors, including services that
 skip intermediate stations. Solid arrows show stopping demand; dashed arrows
@@ -61,11 +66,24 @@ Five directional paths use explicitly tagged opposite-road GTCL geometry where
 one published flow is omitted during product supersession. “248 routed” does
 not assert 248 independently published roads.
 
+## Transport for Wales coverage
+
+- 291 mapped stations across Wales and cross-border routes
+- 356 rail corridors and 5,541 selected GTCL track assets
+- 7,436 dated weekly workings: 6,398 passenger, 651 empty-stock and 387
+  departmental/freight movements
+- 35,708 ORR ODM flows representing 47,526,128 annual journeys
+- 40 service families covering the South Wales Metro, Marches, North Wales,
+  Cambrian, Heart of Wales and English cross-border routes
+
 ## Scope
 
-This repository contains the standalone Great Western demonstration only. Development tooling, raw publisher downloads, national-model payloads and unrelated scenarios are deliberately excluded.
+This repository contains the standalone Great Western and Transport for Wales
+demonstrations only. Development tooling, raw publisher downloads,
+national-model payloads and unrelated scenarios are deliberately excluded.
 
 The current Great Western data snapshot was introduced in commit `4235bdf`.
+The Transport for Wales route was added as a separate reviewed browser product.
 The browser runtime is synchronized separately from the development workspace
 as a reviewed static asset set; generated source archives, unrelated regional
 products and credentials are never copied here. Publication is verified by parsing

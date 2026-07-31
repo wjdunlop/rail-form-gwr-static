@@ -1,7 +1,7 @@
 # Data licences and attribution
 
-This notice applies to the public Great Western browser demonstration. The
-Any future application-code licence will not replace the licences attached to
+This notice applies to the public Great Western and Transport for Wales browser
+demonstrations. Any future application-code licence will not replace the licences attached to
 the source datasets. No source organisation endorses this simulation, and all operational
 and passenger outputs are modelled rather than live information.
 
@@ -38,7 +38,8 @@ destination matrix 2024–25**, Rail Data Marketplace product
 `P-239916c0-7dfa-479a-94c8-0b0958e26185`, version 1.0. The product is marked
 **Open (OGL3)** and expressly permits the raw data to be copied, adapted or
 aggregated and the resulting dataset to be distributed. The simulation uses
-only the station pairs in its 120-station footprint. ODM values are annual
+only the station pairs within each scenario footprint (120 Great Western
+stations and 291 Transport for Wales stations). ODM values are annual
 estimates derived from ticketing data; they are not observed train load counts.
 
 Attribution: **Contains Office of Rail and Road data licensed under the Open
@@ -82,9 +83,10 @@ Links: [OS OpenData](https://www.ordnancesurvey.co.uk/products/open-data),
 Links: [NaPTAN dataset](https://www.data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/naptan),
 [Natural Earth terms](https://www.naturalearthdata.com/about/terms-of-use/).
 
-## GWR references
+## Operator references
 
-GWR timetable PDFs and network pages were used as human-readable references
-for service-family names and route checking. They are not redistributed and
-are not asserted to be open data. GWR names and marks remain the property of
-their respective owners; this project is unaffiliated with GWR.
+GWR and Transport for Wales timetable and network pages were used as
+human-readable references for service-family names and route checking. They are
+not redistributed and are not asserted to be open data. Operator names and
+marks remain the property of their respective owners; this project is
+unaffiliated with GWR and Transport for Wales.

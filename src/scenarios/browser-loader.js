@@ -10,6 +10,10 @@
       description:'Analyse Great Western workings from Paddington through the Thames Valley, Cotswolds, Bristol, South Wales, West Wales, Devon and Cornwall.',
       difficulty:'advanced', learningGoals:Object.freeze(['Great Western trunk capacity','West of England service patterns','Devon and Cornwall operations','South Wales and Carmarthen flows','Passenger interchange resilience']),
       stationCount:120, serviceCount:14, deferred:true }),
+    Object.freeze({ id:'tfw-network', name:'Transport for Wales: Full Network',
+      description:'Analyse the complete Transport for Wales rail network across Wales and its cross-border routes using the seven-day working timetable.',
+      difficulty:'advanced', learningGoals:Object.freeze(['Whole-network TfW operations','South Wales Metro demand','Cambrian and rural-line resilience','Cross-border service regulation','Passenger interchange analysis']),
+      stationCount:291, serviceCount:40, serviceLabel:'SERVICE FAMILIES', deferred:true }),
     Object.freeze({ id:'euston-west-coast', name:'Avanti West Coast: Full Network',
       description:'Operate the complete Avanti West Coast calling-point network from Euston to the West Midlands, North West, North Wales and Scotland.',
       difficulty:'advanced', learningGoals:Object.freeze(['West Coast Main Line capacity','Branch and trunk regulation','Long-distance passenger connections','Real timetable operation']),
@@ -31,6 +35,13 @@
       'src/scenarios/maps/paddington-west.odm.js',
       'src/scenarios/maps/paddington-west.external-demand.js',
       'src/scenarios/paddington-west.js'
+    ]) }),
+    'tfw-network': Object.freeze({ global:'RailTfWScenario', scripts:Object.freeze([
+      'src/scenarios/maps/tfw-network.exact.js',
+      'src/scenarios/maps/tfw-network.stations.js',
+      'src/scenarios/maps/tfw-network.cif.js',
+      'src/scenarios/maps/tfw-network.odm.js',
+      'src/scenarios/tfw-network.js'
     ]) }),
     'euston-west-coast': Object.freeze({ global:'RailEustonWestCoastScenario', scripts:Object.freeze([
       'src/scenarios/maps/euston-west-coast.cif.js',

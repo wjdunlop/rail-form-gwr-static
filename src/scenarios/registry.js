@@ -12,7 +12,7 @@
   else root.RailScenarioRegistry = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (Schema, Trunk, Transfer, PaddingtonWest, EustonWestCoast, DeferredMetadata) {
   'use strict';
-  const order = ['paddington-west'];
+  const order = ['paddington-west','tfw-network'];
   const byId = new Map();
   for (const scenario of [Trunk, Transfer, PaddingtonWest, EustonWestCoast].filter(Boolean)) byId.set(scenario.id, scenario);
   for (const metadata of DeferredMetadata || []) if (!byId.has(metadata.id)) byId.set(metadata.id, metadata);
