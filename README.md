@@ -20,6 +20,75 @@ colour represent modeled passengers per hour.
 
 This repository is intentionally public and the Pages site is intentionally **not password protected**. StatiCrypt encryption is therefore not applied: StatiCrypt's purpose is password-based encryption, which would conflict with the public-access requirement.
 
+## Currently deployed
+
+The published site is built from this repository's `main` branch. Its reviewed
+application runtime is synchronized from
+[`wjdunlop/rail-form`](https://github.com/wjdunlop/rail-form) base commit
+`9523a6e` (`feat: expand UK timetable simulation and regional models`).
+
+| Public route | Scenario | Included browser products |
+| --- | --- | --- |
+| `/rail-form-gwr-static/` | `paddington-west` | Great Western station, GTCL track, CIF timetable, NESA, ORR ODM and external-demand modules |
+| `/rail-form-gwr-static/tfw/` | `tfw-network` | TfW station, exact-track, CIF timetable and ORR ODM modules |
+
+The shared deployment also includes the simulation shell, geographic context,
+passenger-demand and timetable-load models, train/station inspection, demand
+overlays, metrics, activity log, persistence, and static data-licence page.
+Only `paddington-west` and `tfw-network` are exposed by the public scenario
+registry. Avanti, the GB national runtime, development tests, raw publisher
+downloads, local profiling captures and credentials are not deployed.
+
+The deployed content counts are:
+
+- Great Western: 120 stations, 124 corridors, 248 routed directional paths,
+  7,553 weekly workings and 10,394 ORR ODM flows.
+- Transport for Wales: 291 stations, 356 corridors, 7,436 weekly workings and
+  35,708 ORR ODM flows.
+
+## Updating the static deployment
+
+The development repository is the source of truth; this repository is a
+reviewed public subset. Do not copy the development tree wholesale.
+
+1. Commit and push the intended development state to `wjdunlop/rail-form`
+   first. Record that source commit in the **Currently deployed** section above.
+2. Copy changed shared browser assets from the development repository while
+   retaining this repository's public-only `index.html`, `tfw/index.html`,
+   `src/scenarios/browser-loader.js`, `src/scenarios/registry.js`, README and
+   licensing notices unless those files are deliberately being reviewed too.
+3. Copy only the scenario products required by the two published routes:
+   `paddington-west*`, `tfw-network*`, shared runtime modules, geographic
+   context and styles. Never copy `.env`, credentials, raw downloads, national
+   runtime payloads, test captures or unrelated scenarios.
+4. Update cache-busting query strings in both HTML entrypoints whenever a
+   changed asset might otherwise remain in a visitor's browser cache.
+5. Run syntax/unit checks in the development repository and serve this
+   repository locally for both-route browser smoke tests.
+6. Review `git diff --check`, the complete staged file list and the licensing
+   page, then commit and push this repository's `main` branch.
+7. Wait for the GitHub Actions `pages-build-deployment` workflow to succeed.
+   Verify both public routes with a fresh cache-busting `?build=<commit>` query
+   and parse the live station, timetable, demand and track modules to confirm
+   their expected counts.
+
+Useful pre-publish checks from this repository:
+
+```sh
+git diff --check
+node --check app.js
+node --check src/scenarios/registry.js
+node --check src/scenarios/browser-loader.js
+python3 -m http.server 4173
+```
+
+After pushing, use the static repository commit in the inspection URL:
+
+```text
+https://wjdunlop.github.io/rail-form-gwr-static/?scenario=paddington-west&profile=1&build=<static-commit>
+https://wjdunlop.github.io/rail-form-gwr-static/tfw/?build=<static-commit>
+```
+
 ## Run locally
 
 ```sh
