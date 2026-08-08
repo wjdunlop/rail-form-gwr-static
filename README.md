@@ -25,7 +25,7 @@ This repository is intentionally public and the Pages site is intentionally **no
 The published site is built from this repository's `main` branch. Its reviewed
 application runtime is synchronized from
 [`wjdunlop/rail-form`](https://github.com/wjdunlop/rail-form) base commit
-`211326c` (`refactor: remove dormant browser capital state`).
+`ceb7dee` (`perf: bound extreme-speed rendering`).
 
 | Public route | Scenario | Included browser products |
 | --- | --- | --- |
@@ -57,6 +57,13 @@ model coverage. The simulation header provides a compact railway clock, an
 explicit pause/resume button, a single 1×–1024× speed selector, and a weekday
 plus time picker. Applying a specific time pauses the model at that point in
 the permanent seven-day timetable loop.
+
+Modeled demand changes continuously with railway time: the browser interpolates
+between routed 30-minute demand keyframes on every simulation tick. At high
+speeds, exact model time is retained while passenger generation and movement
+are processed in adaptive 15–300-second virtual batches and drawing is capped at
+30 fps (64×–128×), 10 fps (256×), or 4 fps (512×–1024×), keeping long
+accelerated runs responsive.
 
 The Feedback control is present but intentionally disabled until its Google
 Form URL is supplied. To enable it on both routes, set the same URL in the

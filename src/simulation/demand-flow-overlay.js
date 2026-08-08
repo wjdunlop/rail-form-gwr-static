@@ -58,5 +58,19 @@
     return '#e95238';
   }
 
-  return Object.freeze({ aggregate, directionalFactor, colour });
+  function interpolate(from, to, fraction) {
+    const progress = clamp(Number(fraction) || 0, 0, 1), left = new Map((from?.flows || []).map(flow => [flow.key, flow])), right = new Map((to?.flows || []).map(flow => [flow.key, flow])), keys = [...new Set([...left.keys(), ...right.keys()])].sort();
+    const flows = keys.map(key => {
+      const a = left.get(key), b = right.get(key), template = b || a, start = Number(a?.passengersPerHour || 0), end = Number(b?.passengersPerHour || 0);
+      return { ...template, passengersPerHour: start + (end - start) * progress, odFlows: Math.round(Number(a?.odFlows ?? b?.odFlows ?? 0)) };
+    }).sort((a, b) => b.passengersPerHour - a.passengersPerHour || a.key.localeCompare(b.key));
+    const maximum = flows[0]?.passengersPerHour || 0, totalStart = Number(from?.totalPassengersPerHour || 0), totalEnd = Number(to?.totalPassengersPerHour || 0);
+    return Object.freeze({
+      flows: Object.freeze(flows.map(flow => Object.freeze({ ...flow, intensity: maximum ? flow.passengersPerHour / maximum : 0 }))),
+      maximum,
+      totalPassengersPerHour: totalStart + (totalEnd - totalStart) * progress
+    });
+  }
+
+  return Object.freeze({ aggregate, interpolate, directionalFactor, colour });
 });
