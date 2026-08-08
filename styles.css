@@ -364,6 +364,53 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .onboard-journey > div b { overflow: hidden; font: 8px "DM Mono", monospace; text-overflow: ellipsis; white-space: nowrap; }
 .onboard-journey footer { margin-top: 5px; overflow: hidden; color: var(--muted); font: 7px "DM Mono", monospace; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Inspector views are working surfaces: fit the current state and useful next
+   action above the fold without reducing the readable mobile layout. */
+@media (min-width: 721px) {
+  .inspector .panel { padding: 18px 18px 24px; }
+  .inspector .panel-header { margin-bottom: 13px; }
+  .inspector .panel-close { width: 31px; height: 31px; }
+  .inspector .section-label { margin: 14px 0 7px; padding-bottom: 5px; }
+
+  .inspector-hero { min-width: 0; }
+  .station-inspector-hero { display: grid; grid-template-columns: 42px minmax(0,1fr); gap: 12px; align-items: center; margin: 2px 0 11px; }
+  .station-inspector-hero .node-symbol { width: 38px; height: 38px; margin: 0; font-size: 11px; }
+  .station-inspector-hero h2 { margin: 0 0 3px; font-size: 21px; line-height: 1.08; }
+  .station-inspector-hero .panel-subtitle { margin: 0; font-size: 9px; line-height: 1.4; }
+  .station-view-tabs { margin: 10px 0 12px; }
+  .station-view-tabs button { min-height: 30px; }
+  .station-overview-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .station-overview-facts .status-line { min-width: 0; }
+  .station-overview-facts .status-line span,
+  .station-overview-facts .status-line b { display: block; }
+  .station-overview-facts .status-line b { margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .station-timetable-caption { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin: 0 0 7px; }
+  .station-timetable-caption span { flex: none; color: var(--muted); font: 8px "DM Mono", monospace; letter-spacing: .12em; }
+  .station-timetable-caption p { margin: 0; overflow: hidden; color: var(--muted); font-size: 8px; line-height: 1.35; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+  .station-timetable-summary { margin: 0 0 8px; }
+  .station-timetable-summary > div { gap: 3px; padding: 6px; }
+  .station-timetable-summary b { font-size: 14px; }
+  .inspector .station-timetable-row { min-height: 46px; padding: 5px 7px; }
+
+  #line-inspector > h2 { margin-bottom: 4px; font-size: 21px; line-height: 1.16; }
+  #line-inspector > .panel-subtitle { margin-bottom: 10px; font-size: 9px; line-height: 1.4; }
+  #line-inspector .line-swatch { height: 4px; margin: 8px 0 10px; }
+  #line-inspector .journey-map-legend { display: flex; flex-wrap: wrap; gap: 7px 10px; margin: 0 0 9px; border: 0; }
+  #line-inspector .journey-map-legend span { flex: none; padding: 0 0 0 13px; border: 0; font-size: 7px; }
+  #line-inspector .journey-map-legend span::before { left: 0; width: 8px; }
+  #line-inspector .train-live-readout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); column-gap: 12px; }
+  #line-inspector .train-live-readout .status-line { min-width: 0; padding: 6px 0; }
+  #line-inspector .train-live-readout .status-line span,
+  #line-inspector .train-live-readout .status-line b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #line-inspector .load-forecast-summary > div,
+  #line-inspector .passenger-load-summary > div { padding: 6px; }
+  #line-inspector .load-forecast-summary { margin: 5px 0 7px; }
+  #line-inspector .passenger-load-summary { margin: 5px 0; }
+  #line-inspector .load-forecast-row { padding: 6px 0; }
+  #line-inspector .train-stop { min-height: 37px; }
+  #line-inspector .train-stop:not(:last-child)::after { top: 25px; bottom: -11px; }
+}
+
 .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(29,33,31,.72); backdrop-filter: blur(4px); }
 .route-splash { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 24px; background: var(--paper); transition: opacity .22s ease, visibility .22s ease; }
 .route-splash.dismissed { opacity: 0; visibility: hidden; pointer-events: none; }
