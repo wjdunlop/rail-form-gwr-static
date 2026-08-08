@@ -25,7 +25,7 @@ This repository is intentionally public and the Pages site is intentionally **no
 The published site is built from this repository's `main` branch. Its reviewed
 application runtime is synchronized from
 [`wjdunlop/rail-form`](https://github.com/wjdunlop/rail-form) base commit
-`ceb7dee` (`perf: bound extreme-speed rendering`).
+`0c6d4f4` (`perf: smooth virtualized high-speed animation`).
 
 | Public route | Scenario | Included browser products |
 | --- | --- | --- |
@@ -61,9 +61,11 @@ the permanent seven-day timetable loop.
 Modeled demand changes continuously with railway time: the browser interpolates
 between routed 30-minute demand keyframes on every simulation tick. At high
 speeds, exact model time is retained while passenger generation and movement
-are processed in adaptive 15–300-second virtual batches and drawing is capped at
-30 fps (64×–128×), 10 fps (256×), or 4 fps (512×–1024×), keeping long
-accelerated runs responsive.
+are processed in adaptive 15–1,800-second virtual batches, materialized in
+bounded origin slices across browser frames. Infrastructure,
+demand/route annotations, and trains use independent canvas layers: geography
+is retained, annotations are sampled adaptively, and trains remain animated at
+up to 30 fps through 1024×.
 
 The Feedback control is present but intentionally disabled until its Google
 Form URL is supplied. To enable it on both routes, set the same URL in the

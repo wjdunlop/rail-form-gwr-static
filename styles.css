@@ -127,6 +127,9 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 
 .map-wrap { position: relative; overflow: hidden; isolation: isolate; background-color: var(--paper); }
 #game-canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+#demand-canvas,#train-canvas { position:absolute;inset:0;width:100%;height:100%;pointer-events:none; }
+#demand-canvas { z-index:1; }
+#train-canvas { z-index:2; }
 #game-canvas:focus-visible { outline: 3px solid var(--focus); outline-offset: -5px; }
 .mode-hint, .map-key, .map-attribution, .map-layers, .activity-panel, .toast-stack { z-index: 2; }
 .mode-hint { position: absolute; left: 20px; top: 18px; display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--surface-raised); border: 1px solid var(--line); box-shadow: var(--shadow-soft); backdrop-filter: blur(5px); font-size: 9px; letter-spacing: .04em; pointer-events: none; }
