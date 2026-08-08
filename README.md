@@ -25,7 +25,7 @@ This repository is intentionally public and the Pages site is intentionally **no
 The published site is built from this repository's `main` branch. Its reviewed
 application runtime is synchronized from
 [`wjdunlop/rail-form`](https://github.com/wjdunlop/rail-form) base commit
-`0c6d4f4` (`perf: smooth virtualized high-speed animation`).
+`1ce3d9f` (`feat: add station timetable view`).
 
 | Public route | Scenario | Included browser products |
 | --- | --- | --- |
@@ -66,6 +66,11 @@ bounded origin slices across browser frames. Infrastructure,
 demand/route annotations, and trains use independent canvas layers: geography
 is retained, annotations are sampled adaptively, and trains remain animated at
 up to 30 fps through 1024×.
+
+Every station inspector includes Overview, Timetable, and Demand tabs. The
+station timetable shows the next 12 hours of scheduled calls and passing
+movements, including working time, headcode, destination, operator, train
+category, running line, and platform.
 
 The Feedback control is present but intentionally disabled until its Google
 Form URL is supplied. To enable it on both routes, set the same URL in the

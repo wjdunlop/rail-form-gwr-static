@@ -309,6 +309,16 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .fleet-stat span { display: block; color: var(--muted); font: 8px "DM Mono", monospace; }
 .fleet-stat b { display: block; margin-top: 5px; font: 17px "DM Mono", monospace; }
 .schedule-card { border-left: 3px solid var(--signal); padding: 9px 0 10px 11px; border-bottom: 1px solid var(--line); }
+.station-view-tabs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:1px;margin:14px 0 18px;background:var(--line);border:1px solid var(--line)}
+.station-view-tabs button{min-height:34px;border:0;background:var(--paper);color:var(--muted);font:600 8px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.08em}
+.station-view-tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.station-timetable-summary{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);margin:8px 0 12px}
+.station-timetable-summary>div{display:grid;gap:5px;padding:9px;border-right:1px solid var(--line)}.station-timetable-summary>div:last-child{border-right:0}
+.station-timetable-summary span,.station-timetable-head{color:var(--muted);font:7px "DM Mono",monospace;letter-spacing:.08em}.station-timetable-summary b{font-size:16px}
+.station-timetable-head{display:grid;grid-template-columns:43px 1fr 48px;gap:8px;padding:0 7px 6px;border-bottom:1px solid var(--ink)}
+.station-timetable-head span:last-child{text-align:right}
+.station-timetable-row{position:relative;display:grid;grid-template-columns:43px 1fr 38px;gap:8px;align-items:center;min-height:54px;padding:7px;border-bottom:1px solid var(--line)}
+.station-timetable-row time{font:600 12px "DM Mono",monospace}.station-timetable-row div{display:grid;gap:3px;min-width:0}.station-timetable-row div b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}.station-timetable-row div span{color:var(--muted);font:7px "DM Mono",monospace}.station-timetable-row>strong{text-align:right;font:600 10px "DM Mono",monospace}.station-timetable-row>small{position:absolute;right:7px;bottom:3px;color:var(--green);font:7px "DM Mono",monospace}.station-timetable-row.passing{opacity:.62}.station-timetable-row.passing>small{color:var(--signal)}
 .schedule-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 9px; }
 .schedule-head button { border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 8px; }
 .schedule-route { color: var(--muted); font-size: 8px; margin: 3px 0 8px; }
