@@ -33,21 +33,31 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .hidden { display: none !important; }
 
 .shell { display: grid; grid-template-rows: 74px 1fr; height: 100vh; }
-.topbar { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); align-items: center; width: 100%; overflow: hidden; border-bottom: 1px solid var(--ink); background: var(--paper-2); z-index: 5; }
+.topbar { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); align-items: center; width: 100%; overflow: visible; border-bottom: 1px solid var(--ink); background: var(--paper-2); z-index: 5; }
 .brand { height: 100%; border-right: 1px solid var(--ink); display: flex; align-items: center; gap: 10px; padding: 0 17px; font-size: 12px; font-weight: 700; letter-spacing: .16em; }
 .brand-mark { display: grid; place-items: center; width: 39px; height: 39px; color: var(--paper-2); background: var(--ink); font-family: "DM Mono", monospace; font-size: 11px; letter-spacing: -.08em; }
 .eyebrow, .rail-label { font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: .13em; color: var(--muted); }
-.top-actions { display: flex; align-items: center; justify-self: end; min-width: 0; max-width: 100%; height: 100%; overflow-x: auto; scrollbar-width: none; }
+.top-actions { display: flex; align-items: center; justify-self: end; min-width: 0; max-width: 100%; height: 100%; overflow: visible; scrollbar-width: none; }
 .top-actions::-webkit-scrollbar { display: none; }
 .credits { display: flex; flex-direction: column; gap: 3px; min-width: 105px; padding-right: 22px; text-align: right; }
 .credits .mono { font-size: 13px; font-weight: 500; }
-.speed-control { flex: 0 0 auto; height: 100%; display: flex; align-items: center; border-left: 1px solid var(--line); padding: 0 8px; gap: 1px; }
-.tick-count { display: inline-block; width: 13ch; margin-right: 9px; color: var(--muted); font: 8px "DM Mono", monospace; font-variant-numeric: tabular-nums; letter-spacing: .08em; text-align: right; white-space: nowrap; }
-.speed, .icon-btn { border: 0; background: transparent; min-width: 34px; height: 34px; cursor: pointer; font-family: "DM Mono", monospace; font-size: 10px; }
-.speed { min-width: 27px; padding: 0 3px; font-size: 8px; }
-.speed[data-speed="128"], .speed[data-speed="256"], .speed[data-speed="512"] { min-width: 34px; }
-.speed[data-speed="1024"] { min-width: 40px; }
-.speed:hover, .speed.active { background: var(--ink); color: var(--paper-2); }
+.speed-control { flex: 0 0 auto; height: 100%; display: flex; align-items: center; border-left: 1px solid var(--line); padding: 0 8px; gap: 6px; }
+.time-selector { position: relative; }
+.time-display { display: flex; align-items: center; gap: 8px; min-width: 128px; height: 36px; border: 1px solid var(--line); background: transparent; padding: 0 10px; cursor: pointer; color: var(--ink); font: 9px "DM Mono", monospace; font-variant-numeric: tabular-nums; letter-spacing: .06em; white-space: nowrap; }
+.time-display:hover, .time-display[aria-expanded="true"] { border-color: var(--ink); background: #dedad1; }
+.time-display i { margin-left: auto; color: var(--muted); font-style: normal; }
+.time-picker { position: absolute; right: 0; top: calc(100% + 14px); z-index: 30; width: 286px; border: 1px solid var(--ink); border-top: 4px solid var(--signal); background: var(--paper-2); padding: 17px; box-shadow: var(--shadow-soft); }
+.time-picker::before { content: ""; position: absolute; right: 22px; top: -9px; width: 13px; height: 13px; border-left: 1px solid var(--ink); border-top: 1px solid var(--ink); background: var(--paper-2); transform: rotate(45deg); }
+.time-picker-label { display: block; margin-bottom: 13px; color: var(--muted); font: 8px "DM Mono", monospace; letter-spacing: .12em; }
+.time-picker label { display: grid; grid-template-columns: 48px 1fr; align-items: center; gap: 8px; margin-top: 7px; color: var(--muted); font: 8px "DM Mono", monospace; letter-spacing: .08em; }
+.time-picker select, .time-picker input { min-width: 0; height: 36px; border: 1px solid var(--line); border-radius: 0; background: transparent; padding: 0 9px; color: var(--ink); font: 10px "DM Mono", monospace; }
+.time-picker > div { display: flex; justify-content: flex-end; gap: 6px; margin-top: 14px; }
+.time-picker > div button { min-height: 32px; border: 1px solid var(--ink); background: transparent; padding: 0 10px; cursor: pointer; font: 8px "DM Mono", monospace; }
+.time-picker > div button[type="submit"] { background: var(--ink); color: var(--paper-2); }
+.speed-select-label { display: grid; grid-template-columns: auto 59px; align-items: center; gap: 6px; color: var(--muted); font: 7px "DM Mono", monospace; letter-spacing: .1em; }
+.speed-select-label select { height: 36px; border: 1px solid var(--line); border-radius: 0; background: transparent; padding: 0 5px; color: var(--ink); cursor: pointer; font: 9px "DM Mono", monospace; }
+.icon-btn { border: 0; background: transparent; min-width: 34px; height: 34px; cursor: pointer; font-family: "DM Mono", monospace; font-size: 10px; }
+.pause-btn { margin-left: 0; border-color: var(--ink); }
 .icon-btn { border: 1px solid var(--line); margin-left: 6px; font-size: 12px; }
 .icon-btn:disabled { opacity: .32; cursor: default; }
 
@@ -110,6 +120,10 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .passenger-dot::before { content: ""; position: absolute; left: 1px; right: 1px; bottom: -2px; height: 2px; background: radial-gradient(circle at 1px 1px,var(--ink) 0 1px,transparent 1.2px), radial-gradient(circle at calc(100% - 1px) 1px,var(--ink) 0 1px,transparent 1.2px); }
 .help-button { min-height: 40px; margin-top: auto; border: 0; border-top: 1px solid var(--line); background: transparent; padding: 13px 7px 0; cursor: pointer; text-align: left; font-size: 10px; color: var(--muted); }
 .help-button span { display: inline-grid; place-items: center; width: 17px; height: 17px; border: 1px solid var(--muted); border-radius: 50%; margin-right: 5px; }
+.feedback-button { display: flex; align-items: center; gap: 6px; min-height: 35px; margin-top: auto; border-top: 1px solid var(--line); padding: 11px 7px 0; color: var(--muted); cursor: pointer; font-size: 10px; text-decoration: none; }
+.feedback-button:hover { color: var(--ink); }
+.feedback-button.disabled { opacity: .45; cursor: not-allowed; pointer-events: none; }
+.feedback-button + .help-button { margin-top: 5px; }
 
 .map-wrap { position: relative; overflow: hidden; isolation: isolate; background-color: var(--paper); }
 #game-canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
@@ -340,6 +354,22 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .onboard-journey footer { margin-top: 5px; overflow: hidden; color: var(--muted); font: 7px "DM Mono", monospace; text-overflow: ellipsis; white-space: nowrap; }
 
 .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(29,33,31,.72); backdrop-filter: blur(4px); }
+.route-splash { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 24px; background: var(--paper); transition: opacity .22s ease, visibility .22s ease; }
+.route-splash.dismissed { opacity: 0; visibility: hidden; pointer-events: none; }
+.route-splash-card { width: min(720px, 100%); border-top: 7px solid var(--signal); background: var(--paper-2); padding: 42px 46px 38px; box-shadow: 0 18px 60px rgba(29,33,31,.13); }
+.route-splash h1 { max-width: 620px; margin: 13px 0 10px; font-size: clamp(32px, 6vw, 54px); line-height: 1.02; letter-spacing: -.06em; }
+.route-splash p { max-width: 590px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.route-splash-facts { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin: 28px 0 24px; border: 1px solid var(--line); background: var(--line); }
+.route-splash-facts div { min-height: 76px; background: var(--paper-2); padding: 13px; }
+.route-splash-facts b, .route-splash-facts span { display: block; }
+.route-splash-facts b { font: 16px "DM Mono", monospace; }
+.route-splash-facts span { margin-top: 5px; color: var(--muted); font: 8px "DM Mono", monospace; letter-spacing: .08em; }
+.route-load-status { display: flex; align-items: center; gap: 9px; color: var(--muted); font: 8px "DM Mono", monospace; letter-spacing: .12em; }
+.route-load-status i { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); animation: route-pulse 1s ease-in-out infinite alternate; }
+.route-splash.ready .route-load-status i { background: var(--green); animation: none; }
+.route-splash-card > button { width: 100%; min-height: 46px; margin-top: 17px; border: 0; background: var(--ink); color: var(--paper-2); padding: 0 17px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font: 9px "DM Mono", monospace; letter-spacing: .12em; }
+.route-splash-card > button:disabled { background: #d5d1c8; color: var(--muted); }
+@keyframes route-pulse { to { opacity: .25; transform: scale(.75); } }
 .modal { position: relative; width: min(680px, 100%); max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain; background: var(--paper-2); border: 1px solid rgba(255,255,255,.18); border-top: 7px solid var(--signal); padding: 38px 44px 36px; box-shadow: 0 25px 70px rgba(0,0,0,.38); }
 .modal-close { position: absolute; right: 14px; top: 13px; width: 30px; height: 30px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: 20px; font-weight: 300; }
 .modal-kicker { color: var(--signal); font: 9px "DM Mono", monospace; letter-spacing: .15em; }
@@ -405,8 +435,10 @@ button:disabled { opacity: .42; cursor: not-allowed; }
   .brand { justify-content: center; padding: 0; border-right-color: var(--line); }
   .brand-mark { width: 34px; height: 34px; }
   .credits { display: none; }
-  .speed-control { padding-inline: 6px; }
-  .tick-count, .speed:not(.active) { display: none; }
+  .speed-control { padding-inline: 5px; gap: 3px; }
+  .time-display { min-width: 104px; padding-inline: 7px; font-size: 8px; }
+  .speed-select-label { grid-template-columns: 50px; font-size: 0; gap: 0; }
+  .speed-select-label select { width: 50px; }
   .icon-btn { min-width: 32px; margin-left: 2px; }
   .workspace { grid-template-columns: var(--sidebar) minmax(240px, 1fr) var(--inspector); }
   .toolrail { padding: 12px 6px 8px; }
@@ -425,6 +457,9 @@ button:disabled { opacity: .42; cursor: not-allowed; }
   .modal-backdrop { padding: 10px; place-items: start center; }
   .modal, .management-modal { max-height: calc(100dvh - 20px); padding: 28px 20px 24px; }
   .modal h1, .management-modal h1 { padding-right: 32px; font-size: 28px; }
+  .route-splash { padding: 10px; }
+  .route-splash-card { padding: 30px 22px 25px; }
+  .route-splash-facts { grid-template-columns: 1fr; }
   .brief-grid { grid-template-columns: 1fr; gap: 10px; }
   .brief-grid > div { display: grid; grid-template-columns: 28px 1fr; gap: 8px; }
   .brief-grid p { grid-column: 2; margin-top: 4px; }
@@ -438,6 +473,7 @@ button:disabled { opacity: .42; cursor: not-allowed; }
   .topbar { grid-template-columns: var(--sidebar) minmax(0, 1fr); }
   .top-actions { min-width: 0; overflow-x: auto; justify-content: flex-end; scrollbar-width: none; }
   .top-actions::-webkit-scrollbar { display: none; }
+  .time-picker { position: fixed; top: 68px; right: 10px; width: min(286px, calc(100vw - 20px)); }
   .workspace { position: relative; grid-template-columns: var(--sidebar) minmax(0, 1fr); }
   .inspector { position: absolute; inset: 0 0 0 auto; width: var(--inspector); box-shadow: -10px 0 28px rgba(29,33,31,.16); }
   .tool { display: grid; grid-template-columns: 1fr; place-items: center; padding-inline: 0; font-size: 0; }

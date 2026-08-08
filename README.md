@@ -25,7 +25,7 @@ This repository is intentionally public and the Pages site is intentionally **no
 The published site is built from this repository's `main` branch. Its reviewed
 application runtime is synchronized from
 [`wjdunlop/rail-form`](https://github.com/wjdunlop/rail-form) base commit
-`9523a6e` (`feat: expand UK timetable simulation and regional models`).
+`4d55c4b` (`feat: add route loading pages and railway time controls`).
 
 | Public route | Scenario | Included browser products |
 | --- | --- | --- |
@@ -45,6 +45,17 @@ The deployed content counts are:
   7,553 weekly workings and 10,394 ORR ODM flows.
 - Transport for Wales: 291 stations, 356 corridors, 7,436 weekly workings and
   35,708 ORR ODM flows.
+
+Each public route now opens with a route-specific loading page summarizing its
+model coverage. The simulation header provides a compact railway clock, an
+explicit pause/resume button, a single 1×–1024× speed selector, and a weekday
+plus time picker. Applying a specific time pauses the model at that point in
+the permanent seven-day timetable loop.
+
+The Feedback control is present but intentionally disabled until its Google
+Form URL is supplied. To enable it on both routes, set the same URL in the
+`rail-feedback-url` meta tag in `index.html` and `tfw/index.html`, then update
+the HTML cache-busting build identifier, test both routes, commit and publish.
 
 ## Updating the static deployment
 

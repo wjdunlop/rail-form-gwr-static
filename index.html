@@ -2,13 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      const routeParameters = new URLSearchParams(location.search);
+      if (!routeParameters.has('scenario')) routeParameters.set('scenario', 'paddington-west');
+      if (!routeParameters.has('profile')) routeParameters.set('profile', '1');
+      history.replaceState(null, '', `${location.pathname}?${routeParameters}`);
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#e9e5dc" />
+    <meta name="rail-feedback-url" content="" />
     <title>RAIL//FORM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260731-demand-lanes" />
+    <link rel="stylesheet" href="styles.css?v=20260808-time-loading-ui" />
   </head>
   <body>
     <div class="shell">
@@ -16,20 +23,22 @@
         <div class="brand"><span class="brand-mark">R//F</span><span>RAIL FORM</span></div>
         <div class="top-actions">
           <div class="credits"><span class="eyebrow">FARE REVENUE</span><span id="credits" class="mono">0 CR</span></div>
-          <div class="speed-control" aria-label="Simulation speed">
-            <span id="tick-count" class="tick-count">THU 07:00:00</span>
-            <button class="speed active" data-speed="1">1×</button>
-            <button class="speed" data-speed="2">2×</button>
-            <button class="speed" data-speed="4">4×</button>
-            <button class="speed" data-speed="8">8×</button>
-            <button class="speed" data-speed="16">16×</button>
-            <button class="speed" data-speed="32">32×</button>
-            <button class="speed" data-speed="64">64×</button>
-            <button class="speed" data-speed="128">128×</button>
-            <button class="speed" data-speed="256">256×</button>
-            <button class="speed" data-speed="512">512×</button>
-            <button class="speed" data-speed="1024">1024×</button>
-            <button id="pause-btn" class="icon-btn" title="Pause">Ⅱ</button>
+          <div class="speed-control" aria-label="Simulation time and speed">
+            <div class="time-selector">
+              <button id="time-picker-toggle" class="time-display" type="button" aria-expanded="false" aria-controls="time-picker" title="Set railway time"><span id="tick-count">THU 07:00:00</span><i>⌄</i></button>
+              <form id="time-picker" class="time-picker hidden">
+                <span class="time-picker-label">SET RAILWAY TIME</span>
+                <label>DAY<select id="time-day"><option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option><option value="3">Thursday</option><option value="4">Friday</option><option value="5">Saturday</option><option value="6">Sunday</option></select></label>
+                <label>TIME<input id="time-value" type="time" step="60" value="07:00" required></label>
+                <div><button id="time-cancel" type="button">CANCEL</button><button type="submit">PAUSE + SET</button></div>
+              </form>
+            </div>
+            <button id="pause-btn" class="icon-btn pause-btn" type="button" title="Pause" aria-label="Pause simulation">Ⅱ</button>
+            <label class="speed-select-label" for="speed-select">SPEED
+              <select id="speed-select" aria-label="Simulation speed">
+                <option value="1">1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option><option value="16">16×</option><option value="32">32×</option><option value="64">64×</option><option value="128">128×</option><option value="256">256×</option><option value="512">512×</option><option value="1024">1024×</option>
+              </select>
+            </label>
             <button id="save-btn" class="icon-btn checkpoint-btn" title="Create checkpoint">◇</button>
             <button id="load-btn" class="icon-btn checkpoint-btn" title="Restore checkpoint">⟲</button>
             <button id="save-manager-btn" class="icon-btn" title="Named saves">▣</button>
@@ -67,6 +76,7 @@
             <div class="editor-budget"><span>EDITOR BUDGET</span><b id="editor-credits">2,400 CR</b></div>
             <div class="editor-history"><button id="undo-btn" title="Undo construction" disabled>↶ Undo</button><button id="redo-btn" title="Redo construction" disabled>Redo ↷</button></div>
           </details>
+          <a id="feedback-link" class="feedback-button disabled" aria-disabled="true" title="Feedback form URL pending"><span>↗</span> Feedback</a>
           <button id="help-btn" class="help-button"><span>?</span> Operations guide</button>
         </aside>
 
@@ -122,7 +132,18 @@
       </main>
     </div>
 
-    <div id="onboarding" class="modal-backdrop">
+    <section id="route-splash" class="route-splash" aria-live="polite">
+      <div class="route-splash-card">
+        <span class="modal-kicker" id="route-splash-kicker">RAIL FORM / LOADING</span>
+        <h1 id="route-splash-title">Preparing railway model</h1>
+        <p id="route-splash-description">Loading geographic track, the seven-day working timetable, and passenger demand.</p>
+        <div id="route-splash-facts" class="route-splash-facts"></div>
+        <div class="route-load-status"><i></i><span id="route-load-label">LOADING MODEL</span></div>
+        <button id="route-splash-enter" type="button" disabled>OPEN MODEL <span>→</span></button>
+      </div>
+    </section>
+
+    <div id="onboarding" class="modal-backdrop hidden">
       <div class="modal">
         <button id="close-onboarding" class="modal-close">×</button>
         <span class="modal-kicker">NETWORK BRIEF / 001</span>
@@ -198,8 +219,8 @@
     <script src="src/simulation/od-demand.js?v=20260727-time-demand"></script>
     <script src="src/simulation/demand-flow-overlay.js?v=20260731-stopping-lanes"></script>
     <script src="src/simulation/timetable-passenger-load.js?v=20260727-od-loads"></script>
-    <script src="src/scenarios/browser-loader.js?v=20260731-public-tfw"></script>
-    <script src="src/scenarios/registry.js?v=20260731-public-tfw"></script>
+    <script src="src/scenarios/browser-loader.js?v=20260808-public-routes"></script>
+    <script src="src/scenarios/registry.js?v=20260808-public-routes"></script>
     <script src="src/scenarios/legacy-adapter.js?v=20260727-memory"></script>
     <script src="src/ui/save-manager.js"></script>
     <script src="src/ui/scenario-browser.js?v=20260727-national-scenario"></script>
@@ -211,6 +232,6 @@
     <script src="src/data/uk-map-outline.js?v=20260727"></script>
     <script src="src/data/uk-map-context.js?v=20260727"></script>
     <script src="src/data/os-land-context.js?v=20260727"></script>
-    <script src="app.js?v=20260731-station-names"></script>
+    <script src="app.js?v=20260808-time-loading-ui"></script>
   </body>
 </html>
