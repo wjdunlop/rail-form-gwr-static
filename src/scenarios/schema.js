@@ -153,7 +153,7 @@
       if (!queuesByOrigin.has(queue.originStationId)) queuesByOrigin.set(queue.originStationId, {});
       queuesByOrigin.get(queue.originStationId)[queue.destinationStationId] = queue.count;
     });
-    const cities = definition.cities.map(city => ({ ...city, waitingPassengers: queuesByOrigin.get(city.stationId) || {}, completedTrips: 0, transferCount: 0, revenue: 0 }));
+    const cities = definition.cities.map(city => ({ ...city, waitingPassengers: queuesByOrigin.get(city.stationId) || {}, completedTrips: 0, transferCount: 0 }));
     const stations = definition.stations.map(station => ({ id: station.id, name: station.name, kind: station.kind, x: station.x, y: station.y,
       area: station.area, ...(station.layout?{layout:station.layout}:{}), ...(station.geography?{geography:station.geography}:{}), platformRefs:[...(station.platformRefs||[])],platformIds:(station.platformRefs||[]).map(ref=>`${station.id}:P${ref}`), cityId: station.cityId || null }));
     let locomotiveIndex = 0, coachIndex = 0;
@@ -172,7 +172,7 @@
       rngState: null, paused: true, speed: 1, credits: definition.credits, topologyRevision: 0, serviceRevision: 0, scheduleRevision: 0,
       grid: definition.grid, stations, trackEdges: buildTrackEdges(definition.trackCells), services, trains, journeys: [], cities,
       commands: [], events: [], ledger: [], metrics: { passengersMoved: 0, transfers: 0,
-        fareRevenue: 0, movingTicks: 0, assignedTicks: 0, history: [] },
+        movingTicks: 0, assignedTicks: 0, history: [] },
       configuration: { scenarioId: definition.id, trackCells: definition.trackCells,
         fleet: { ...definition.fleet, locomotiveIds, coachIds }, initialQueues: definition.initialQueues,
         ...(definition.workingTimetable?{workingTimetable:definition.workingTimetable}: {}) }

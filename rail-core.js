@@ -99,7 +99,6 @@
     return issues;
   }
 
-  function distanceFare(pathLength, rate=1.4) { return Math.ceil(Math.max(1,pathLength-2)*rate); }
   function demandMultiplier(activeServices, completedTrips, population) {
     if(!activeServices)return .18;
     return 1+activeServices*.22+Math.min(1.5,(completedTrips/Math.max(1,population))*40);
@@ -126,5 +125,5 @@
     return journeys;
   }
 
-  return {key,contains,overlaps,cells,entries,findRailPath,validateArea,platformAssignments,validateNetwork,distanceFare,demandMultiplier,passengerSpawnRate,findPassengerJourney,findPassengerJourneysFrom};
+  return {key,contains,overlaps,cells,entries,findRailPath,validateArea,platformAssignments,validateNetwork,demandMultiplier,passengerSpawnRate,findPassengerJourney,findPassengerJourneysFrom};
 });

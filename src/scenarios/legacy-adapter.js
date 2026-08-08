@@ -43,7 +43,7 @@
         x: source.x, y: source.y, area: clone(source.area || null), layout:clone(source.layout||null), geography:clone(source.geography||null), platformRefs:clone(source.platformRefs||[]), platformCount:source.platformCount||Math.max(Math.min(source.area?.w||1,source.area?.h||1),serviceCounts.get(source.id)||1), timetableManaged:Boolean(source.timetableManaged), allowThroughRouting:Boolean(source.allowThroughRouting), color: source.color || '#74766f'
       };
       if (city) Object.assign(station, { population: city.population || 0, passengers: clone(queues.get(source.id) || {}), spawnBuffer: {},
-        completedTrips: city.completedTrips || 0, transferCount: city.transferCount || 0, revenue: city.revenue || 0 });
+        completedTrips: city.completedTrips || 0, transferCount: city.transferCount || 0 });
       return station;
     });
   }
@@ -83,7 +83,7 @@
   }
 
   function initialMetrics() {
-    return { passengersMoved: 0, transfers: 0, fareRevenue: 0,
+    return { passengersMoved: 0, transfers: 0,
       movingTicks: 0, assignedTicks: 0, history: [] };
   }
 

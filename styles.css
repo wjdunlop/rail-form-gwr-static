@@ -39,8 +39,8 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .eyebrow, .rail-label { font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: .13em; color: var(--muted); }
 .top-actions { display: flex; align-items: center; justify-self: end; min-width: 0; max-width: 100%; height: 100%; overflow: visible; scrollbar-width: none; }
 .top-actions::-webkit-scrollbar { display: none; }
-.credits { display: flex; flex-direction: column; gap: 3px; min-width: 105px; padding-right: 22px; text-align: right; }
-.credits .mono { font-size: 13px; font-weight: 500; }
+.journey-summary { display: flex; flex-direction: column; gap: 3px; min-width: 122px; padding-right: 22px; text-align: right; }
+.journey-summary .mono { font-size: 13px; font-weight: 500; }
 .speed-control { flex: 0 0 auto; height: 100%; display: flex; align-items: center; border-left: 1px solid var(--line); padding: 0 8px; gap: 6px; }
 .time-selector { position: relative; }
 .time-display { display: flex; align-items: center; gap: 8px; min-width: 128px; height: 36px; border: 1px solid var(--line); background: transparent; padding: 0 10px; cursor: pointer; color: var(--ink); font: 9px "DM Mono", monospace; font-variant-numeric: tabular-nums; letter-spacing: .06em; white-space: nowrap; }
@@ -434,7 +434,7 @@ button:disabled { opacity: .42; cursor: not-allowed; }
   .topbar { grid-template-columns: var(--sidebar) minmax(0, 1fr); }
   .brand { justify-content: center; padding: 0; border-right-color: var(--line); }
   .brand-mark { width: 34px; height: 34px; }
-  .credits { display: none; }
+  .journey-summary { display: none; }
   .speed-control { padding-inline: 5px; gap: 3px; }
   .time-display { min-width: 104px; padding-inline: 7px; font-size: 8px; }
   .speed-select-label { grid-template-columns: 50px; font-size: 0; gap: 0; }
@@ -516,7 +516,7 @@ body { font-size: 13px; }
 .brand { font-size: 13px; letter-spacing: .08em; }
 .eyebrow, .rail-label, .inspector-index, .panel-index, .section-label,
 .modal-kicker, .activity-kicker { font-size: 10px; letter-spacing: .05em; }
-.credits .mono { font-size: 12px; }
+.journey-summary .mono { font-size: 12px; }
 .tick-count { font-size: 9px; letter-spacing: 0; }
 .speed { min-width: 31px; height: 38px; padding-inline: 4px; font-size: 9px; }
 .speed[data-speed="128"], .speed[data-speed="256"], .speed[data-speed="512"] { min-width: 39px; }

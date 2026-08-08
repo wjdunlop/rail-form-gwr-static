@@ -92,7 +92,6 @@
         waitingPassengers: object(station.passengers) ? clone(station.passengers) : {},
         completedTrips: integer(station.completedTrips),
         transferCount: integer(station.transferCount),
-        revenue: number(station.revenue)
       })),
       commands: [],
       events: [],

@@ -15,14 +15,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260808-time-loading-ui" />
+    <link rel="stylesheet" href="styles.css?v=20260808-no-fare" />
   </head>
   <body>
     <div class="shell">
       <header class="topbar">
         <div class="brand"><span class="brand-mark">R//F</span><span>RAIL FORM</span></div>
         <div class="top-actions">
-          <div class="credits"><span class="eyebrow">FARE REVENUE</span><span id="credits" class="mono">0 CR</span></div>
+          <div class="journey-summary"><span id="summary-label" class="eyebrow">COMPLETED JOURNEYS</span><span id="journey-count" class="mono">0</span></div>
           <div class="speed-control" aria-label="Simulation time and speed">
             <div class="time-selector">
               <button id="time-picker-toggle" class="time-display" type="button" aria-expanded="false" aria-controls="time-picker" title="Set railway time"><span id="tick-count">THU 07:00:00</span><i>⌄</i></button>
@@ -152,7 +152,7 @@
         <div class="brief-grid">
           <div><span class="brief-num">01</span><b>Inspect the service</b><p>Select trains and stations to examine routes, platforms, passenger loads, and destinations.</p></div>
           <div><span class="brief-num">02</span><b>Control operations</b><p>Review the working plan, fleet allocation, directional running, and capacity constraints.</p></div>
-          <div><span class="brief-num">03</span><b>Analyze performance</b><p>Track demand, queues, throughput, transfers, revenue, and completed journeys over time.</p></div>
+          <div><span class="brief-num">03</span><b>Analyze performance</b><p>Track demand, queues, throughput, transfers, train loads, and completed journeys over time.</p></div>
         </div>
         <button id="start-btn" class="primary-button">BEGIN OPERATIONS <span>→</span></button>
         <button id="demo-btn" class="secondary-button">LOAD PASSENGER TEST MAP <span>↗</span></button>
@@ -198,7 +198,7 @@
       </div>
     </div>
 
-    <script src="rail-core.js"></script>
+    <script src="rail-core.js?v=20260808-no-fare"></script>
     <script src="src/model/ids.js"></script>
     <script src="src/model/rng.js"></script>
     <script src="src/model/schema.js"></script>
@@ -232,6 +232,6 @@
     <script src="src/data/uk-map-outline.js?v=20260727"></script>
     <script src="src/data/uk-map-context.js?v=20260727"></script>
     <script src="src/data/os-land-context.js?v=20260727"></script>
-    <script src="app.js?v=20260808-time-loading-ui"></script>
+    <script src="app.js?v=20260808-no-fare"></script>
   </body>
 </html>
