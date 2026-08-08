@@ -25,7 +25,7 @@ This repository is intentionally public and the Pages site is intentionally **no
 The published site is built from this repository's `main` branch. Its reviewed
 application runtime is synchronized from
 [`wjdunlop/rail-form`](https://github.com/wjdunlop/rail-form) base commit
-`1ce3d9f` (`feat: add station timetable view`).
+`b3b6ea9` (`fix: repaint retained map layer after resize`).
 
 | Public route | Scenario | Included browser products |
 | --- | --- | --- |
