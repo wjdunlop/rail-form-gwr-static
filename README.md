@@ -25,7 +25,7 @@ This repository is intentionally public and the Pages site is intentionally **no
 The published site is built from this repository's `main` branch. Its reviewed
 application runtime is synchronized from
 [`wjdunlop/rail-form`](https://github.com/wjdunlop/rail-form) base commit
-`7350f70` (`feat: remove fare revenue modeling`).
+`211326c` (`refactor: remove dormant browser capital state`).
 
 | Public route | Scenario | Included browser products |
 | --- | --- | --- |
@@ -36,8 +36,11 @@ The shared deployment also includes the simulation shell, geographic context,
 passenger-demand and timetable-load models, train/station inspection, demand
 overlays, metrics, activity log, persistence, and static data-licence page.
 Passenger journeys, transfers, queues, loads and completion counts are modeled;
-fares and fare revenue are not calculated or displayed, and passenger activity
-does not alter the construction budget.
+fares, revenue, capital, and other financial outcomes are not calculated or
+displayed.
+The public interface is a read-only timetable and infrastructure model. It does
+not expose purchasing, capital, construction, editable fleet allocation,
+conditional dispatch controls, line deletion, or game objectives.
 Only `paddington-west` and `tfw-network` are exposed by the public scenario
 registry. Avanti, the GB national runtime, development tests, raw publisher
 downloads, local profiling captures and credentials are not deployed.

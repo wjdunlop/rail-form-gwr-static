@@ -305,8 +305,6 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .fleet-stat { border: 1px solid var(--line); padding: 10px; }
 .fleet-stat span { display: block; color: var(--muted); font: 8px "DM Mono", monospace; }
 .fleet-stat b { display: block; margin-top: 5px; font: 17px "DM Mono", monospace; }
-.buy-button { width: 100%; margin-top: 7px; border: 1px solid var(--line); background: transparent; padding: 6px; cursor: pointer; font-size: 8px; }
-.buy-button:hover { background: var(--ink); color: var(--paper-2); }
 .schedule-card { border-left: 3px solid var(--signal); padding: 9px 0 10px 11px; border-bottom: 1px solid var(--line); }
 .schedule-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 9px; }
 .schedule-head button { border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 8px; }
@@ -559,7 +557,7 @@ body { font-size: 13px; }
 .stepper { height: 40px; grid-template-columns: 40px 1fr 40px; }
 .stepper span { font-size: 11px; }
 .mini-field { height: 32px; grid-template-columns: 31px 1fr 31px; }
-.mini-field span, .schedule-head button, .buy-button { font-size: 9px; }
+.mini-field span, .schedule-head button { font-size: 9px; }
 .fleet-stat span, .metric-card span { font-size: 9px; }
 .metric-card small { font-size: 10px; }
 .train-stop { min-height: 48px; }

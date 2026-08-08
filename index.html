@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260808-no-fare" />
+    <link rel="stylesheet" href="styles.css?v=20260808-model-only" />
   </head>
   <body>
     <div class="shell">
@@ -54,8 +54,8 @@
             <button class="tool active" data-tool="inspect" title="Inspect trains, stations, and lines (4)">
               <span class="tool-icon inspect-icon"></span><span>Inspect</span><kbd>4</kbd>
             </button>
-            <button class="tool" data-tool="control" title="Fleet allocation and schedules (6)">
-              <span class="tool-icon control-icon"></span><span>Control</span><kbd>6</kbd>
+            <button class="tool" data-tool="control" title="Working timetable and service plan (6)">
+              <span class="tool-icon control-icon"></span><span>Timetable</span><kbd>6</kbd>
             </button>
             <button class="tool" data-tool="analytics" title="Network performance (7)">
               <span class="tool-icon analytics-icon"></span><span>Metrics</span><kbd>7</kbd>
@@ -64,18 +64,6 @@
               <span class="tool-icon demand-tool-icon"></span><span>Demand</span><kbd>8</kbd>
             </button>
           </div>
-          <details class="editor-tools">
-            <summary><span>NETWORK EDITOR</span><i>+</i></summary>
-            <div class="tool-group">
-              <button class="tool" data-tool="track" title="Lay track (1)"><span class="tool-icon track-icon"></span><span>Track</span><kbd>1</kbd></button>
-              <button class="tool" data-tool="erase" title="Remove track (2)"><span class="tool-icon erase-icon"></span><span>Remove</span><kbd>2</kbd></button>
-              <button class="tool" data-tool="double" title="Lay parallel double track (D)"><span class="tool-icon double-track-icon"></span><span>Double</span><kbd>D</kbd></button>
-              <button class="tool" data-tool="station" title="Drag a station area (5)"><span class="tool-icon station-icon"></span><span>Station</span><kbd>5</kbd></button>
-              <button class="tool" data-tool="line" title="Create a rail line (3)"><span class="tool-icon line-icon"></span><span>New line</span><kbd>3</kbd></button>
-            </div>
-            <div class="editor-budget"><span>EDITOR BUDGET</span><b id="editor-credits">2,400 CR</b></div>
-            <div class="editor-history"><button id="undo-btn" title="Undo construction" disabled>↶ Undo</button><button id="redo-btn" title="Redo construction" disabled>Redo ↷</button></div>
-          </details>
           <a id="feedback-link" class="feedback-button disabled" aria-disabled="true" title="Feedback form URL pending"><span>↗</span> Feedback</a>
           <button id="help-btn" class="help-button"><span>?</span> Operations guide</button>
         </aside>
@@ -151,13 +139,10 @@
         <p class="modal-lede">Explore timetable operations, live train movements, passenger demand, and network performance.</p>
         <div class="brief-grid">
           <div><span class="brief-num">01</span><b>Inspect the service</b><p>Select trains and stations to examine routes, platforms, passenger loads, and destinations.</p></div>
-          <div><span class="brief-num">02</span><b>Control operations</b><p>Review the working plan, fleet allocation, directional running, and capacity constraints.</p></div>
+          <div><span class="brief-num">02</span><b>Read the timetable</b><p>Review dated workings, active trains, platforms, formations, and capacity constraints.</p></div>
           <div><span class="brief-num">03</span><b>Analyze performance</b><p>Track demand, queues, throughput, transfers, train loads, and completed journeys over time.</p></div>
         </div>
         <button id="start-btn" class="primary-button">BEGIN OPERATIONS <span>→</span></button>
-        <button id="demo-btn" class="secondary-button">LOAD PASSENGER TEST MAP <span>↗</span></button>
-        <button id="trunk-demo-btn" class="secondary-button">LOAD TRUNK + BRANCH EXAMPLE <span>↗</span></button>
-        <button id="transfer-demo-btn" class="secondary-button">LOAD TRANSFER TEST <span>↗</span></button>
         <button id="browse-scenarios-btn" class="secondary-button">BROWSE ALL SCENARIOS <span>→</span></button>
       </div>
     </div>
@@ -198,7 +183,7 @@
       </div>
     </div>
 
-    <script src="rail-core.js?v=20260808-no-fare"></script>
+    <script src="rail-core.js?v=20260808-model-only"></script>
     <script src="src/model/ids.js"></script>
     <script src="src/model/rng.js"></script>
     <script src="src/model/schema.js"></script>
@@ -232,6 +217,6 @@
     <script src="src/data/uk-map-outline.js?v=20260727"></script>
     <script src="src/data/uk-map-context.js?v=20260727"></script>
     <script src="src/data/os-land-context.js?v=20260727"></script>
-    <script src="app.js?v=20260808-no-fare"></script>
+    <script src="app.js?v=20260808-model-only"></script>
   </body>
 </html>
